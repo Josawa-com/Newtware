@@ -4,46 +4,76 @@
 
 @section('description', __('site.services_page.lead'))
 
-@section('content')
-    {{-- Hero --}}
-    <section class="relative overflow-hidden border-b border-slate-200/70 bg-netware-mist dark:border-slate-800 dark:bg-slate-900">
-        <div class="orb-drift pointer-events-none absolute -top-32 right-0 h-80 w-80 rounded-full bg-netware-teal/15 blur-3xl"></div>
+@php
+    $services = config('netware.services');
+    $flow = [
+        [__('site.services_page.flow_1_title'), __('site.services_page.flow_1_body')],
+        [__('site.services_page.flow_2_title'), __('site.services_page.flow_2_body')],
+        [__('site.services_page.flow_3_title'), __('site.services_page.flow_3_body')],
+    ];
+@endphp
 
-        <div class="relative mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:gap-10 sm:px-6 sm:py-14 lg:grid-cols-12 lg:gap-14 lg:px-8 lg:py-16">
+@section('content')
+    {{-- Hero: sama seperti katalog, panel bersudut tegas di atas pola sirkuit. --}}
+    <section class="relative overflow-hidden border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
+        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(51,80,149,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(51,80,149,0.055)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent)] dark:bg-[linear-gradient(to_right,rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.12)_1px,transparent_1px)]"></div>
+
+        <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1200 360" preserveAspectRatio="none" aria-hidden="true">
+            <g fill="none" stroke="#167d94" stroke-width="1">
+                <path d="M0 300 H220 L290 230 H480" class="circuit-glow" />
+                <path d="M0 150 H110 L170 90 H350 L410 150 H600" class="circuit-glow circuit-glow-2" />
+                <path d="M1200 70 H1010 L940 140 H780 L720 70 H600" class="circuit-glow circuit-glow-3" />
+                <path d="M1200 260 H1040 L970 190 H830" class="circuit-glow circuit-glow-2" />
+            </g>
+            <g fill="#167d94">
+                <circle cx="290" cy="230" r="3" class="circuit-glow" />
+                <circle cx="410" cy="150" r="3" class="circuit-glow circuit-glow-2" />
+                <circle cx="940" cy="140" r="3" class="circuit-glow circuit-glow-3" />
+                <circle cx="970" cy="190" r="3" class="circuit-glow circuit-glow-2" />
+            </g>
+        </svg>
+
+        <div class="relative mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:px-6 sm:py-12 lg:grid-cols-12 lg:items-end lg:gap-12 lg:px-8 lg:py-14">
             <div class="lg:col-span-7" data-reveal>
-                <div class="flex items-center gap-3">
+                <nav class="flex items-center gap-2 text-xs text-slate-400" aria-label="Breadcrumb">
+                    <a href="{{ route('beranda') }}" class="transition-colors hover:text-netware-teal">{{ __('site.nav.home') }}</a>
+                    <span aria-hidden="true">/</span>
+                    <span class="text-slate-600 dark:text-slate-300">{{ __('site.nav.services') }}</span>
+                </nav>
+
+                <div class="mt-6 flex items-center gap-3">
                     <span class="h-px w-8 bg-netware-teal"></span>
                     <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.services') }}</p>
                 </div>
 
-                <h1 class="mt-4 text-[2rem] leading-[1.12] font-semibold tracking-tight text-netware-navy sm:mt-5 sm:text-4xl sm:leading-[1.08] lg:text-5xl dark:text-white">
-                    {{ __('site.services_page.title_1') }}<br>{{ __('site.services_page.title_2') }}
+                <h1 class="mt-4 text-[2rem] leading-[1.1] font-semibold tracking-tight text-netware-navy sm:text-4xl lg:text-[2.9rem] dark:text-white">
+                    {{ __('site.services_page.title_1') }}<br>
+                    <span class="text-netware-teal">{{ __('site.services_page.title_2') }}</span>
                 </h1>
 
-                <p class="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:mt-6 sm:text-lg dark:text-slate-400">
+                <p class="mt-5 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-400">
                     {{ __('site.services_page.lead') }}
                 </p>
             </div>
 
-            <div class="lg:col-span-5 lg:pt-8" data-reveal>
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 dark:border-slate-800 dark:bg-slate-900">
-                    <div class="flex items-center gap-3">
-                        <span class="h-px w-6 bg-netware-teal"></span>
-                        <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.hours') }}</p>
+            <div class="lg:col-span-5" data-reveal>
+                <div class="border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                    <div class="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
+                        <p class="text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase dark:text-slate-400">{{ __('site.labels.hours') }}</p>
                     </div>
 
-                    <dl class="mt-5 space-y-3">
-                        <div class="flex items-baseline justify-between gap-4">
-                            <dt class="text-sm text-slate-500">{{ __('site.labels.open') }}</dt>
-                            <dd class="text-sm font-medium text-netware-navy dark:text-white">{{ config('netware.hours.open') }} {{ config('netware.hours.timezone') }}</dd>
+                    <dl class="divide-y divide-slate-200 dark:divide-slate-800">
+                        <div class="flex items-baseline justify-between gap-4 px-4 py-3">
+                            <dt class="text-xs tracking-wide text-slate-400 uppercase">{{ __('site.labels.open') }}</dt>
+                            <dd class="text-sm font-semibold tabular-nums text-netware-navy dark:text-white">{{ config('netware.hours.open') }} {{ config('netware.hours.timezone') }}</dd>
                         </div>
-                        <div class="flex items-baseline justify-between gap-4">
-                            <dt class="text-sm text-slate-500">{{ __('site.labels.close') }}</dt>
-                            <dd class="text-sm font-medium text-netware-navy dark:text-white">{{ config('netware.hours.close') }} {{ config('netware.hours.timezone') }}</dd>
+                        <div class="flex items-baseline justify-between gap-4 px-4 py-3">
+                            <dt class="text-xs tracking-wide text-slate-400 uppercase">{{ __('site.labels.close') }}</dt>
+                            <dd class="text-sm font-semibold tabular-nums text-netware-navy dark:text-white">{{ config('netware.hours.close') }} {{ config('netware.hours.timezone') }}</dd>
                         </div>
                     </dl>
 
-                    <p class="mt-5 rounded-lg bg-netware-sand px-4 py-3 text-xs leading-relaxed text-amber-900 dark:bg-amber-500/10 dark:text-amber-200/90">
+                    <p class="border-t border-slate-200 bg-netware-sand px-4 py-3 text-[11px] leading-relaxed text-amber-900 dark:border-slate-800 dark:bg-amber-500/10 dark:text-amber-200/90">
                         {{ config('netware.hours.note') }}
                     </p>
 
@@ -51,7 +81,7 @@
                         href="https://wa.me/{{ config('netware.whatsapp') }}?text={{ rawurlencode(__('site.whatsapp_message')) }}"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="mt-4 flex items-center justify-between gap-3 border-t border-slate-200 pt-4 text-sm font-medium text-netware-navy transition-colors duration-200 hover:text-netware-teal dark:border-slate-800 dark:text-white"
+                        class="flex items-center justify-between gap-3 border-t border-slate-200 px-4 py-3 text-sm font-medium text-netware-navy transition-colors duration-200 hover:bg-slate-50 hover:text-netware-teal dark:border-slate-800 dark:text-white dark:hover:bg-slate-800"
                     >
                         <span class="inline-flex items-center gap-2">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -68,91 +98,109 @@
         </div>
     </section>
 
-    {{-- Daftar jasa --}}
-    <section class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-        <div class="flex items-center gap-3" data-reveal>
-            <span class="h-px w-8 bg-netware-teal"></span>
-            <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.service_list') }}</p>
+    {{-- Daftar jasa: grid bergaris seperti katalog barang. --}}
+    <section class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+        <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-slate-200 pb-4 dark:border-slate-800" data-reveal>
+            <h2 class="text-sm font-semibold tracking-[0.16em] text-slate-500 uppercase dark:text-slate-400">
+                {{ __('site.labels.service_list') }}
+            </h2>
+            <p class="text-sm tabular-nums text-slate-500 dark:text-slate-400">{{ count($services) }} {{ __('site.labels.service_types') }}</p>
         </div>
 
-        <ol class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach (config('netware.services') as $service)
-                <li
-                    class="group rounded-xl border border-slate-200 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-netware-teal/40 hover:shadow-[0_24px_45px_-32px_rgba(51,80,149,0.5)] sm:p-6 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-netware-teal/60"
-                    data-reveal
-                >
+        <ol class="mt-6 grid gap-px border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-3 dark:border-slate-800 dark:bg-slate-800">
+            @foreach ($services as $service)
+                <li class="group bg-white p-5 transition-colors duration-300 hover:bg-slate-50 dark:bg-slate-950 dark:hover:bg-slate-900" data-reveal>
                     <div class="flex items-center justify-between gap-4">
-                        <span class="text-xs font-semibold tracking-[0.18em] text-slate-300 transition-colors duration-300 group-hover:text-netware-teal dark:text-slate-600">
+                        <span class="text-[10px] font-semibold tracking-[0.16em] tabular-nums text-slate-400 uppercase">
                             {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
                         </span>
-                        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-netware-mist text-netware-teal transition-colors duration-300 group-hover:bg-netware-teal group-hover:text-white dark:bg-slate-800">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                            </svg>
-                        </span>
+                        <svg class="h-4 w-4 text-slate-300 transition-colors duration-300 group-hover:text-netware-teal dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                        </svg>
                     </div>
 
-                    <h2 class="mt-6 text-base font-semibold text-netware-navy dark:text-white">{{ $service['name'] }}</h2>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ $service['description'] }}</p>
+                    <h3 class="mt-4 text-sm font-semibold text-netware-navy dark:text-white">{{ $service['name'] }}</h3>
+                    <p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $service['description'] }}</p>
                 </li>
             @endforeach
         </ol>
     </section>
 
     {{-- Alur layanan --}}
-    <section class="border-y border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-900/40">
-        <div class="mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:px-6 sm:py-14 lg:grid-cols-12 lg:gap-14 lg:px-8 lg:py-16">
+    <section class="border-y border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+        <div class="mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:px-6 sm:py-12 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:py-14">
             <div class="lg:col-span-7" data-reveal>
                 <div class="flex items-center gap-3">
                     <span class="h-px w-8 bg-netware-teal"></span>
                     <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.flow') }}</p>
                 </div>
 
-                <h2 class="mt-4 text-xl leading-snug font-semibold tracking-tight text-netware-navy sm:mt-5 sm:text-2xl lg:text-3xl dark:text-white">
+                <h2 class="mt-4 text-xl leading-snug font-semibold tracking-tight text-netware-navy sm:text-2xl lg:text-3xl dark:text-white">
                     {{ __('site.services_page.flow_title') }}
                 </h2>
 
-                <ol class="mt-8">
-                    @foreach ([
-                        [__('site.services_page.flow_1_title'), __('site.services_page.flow_1_body')],
-                        [__('site.services_page.flow_2_title'), __('site.services_page.flow_2_body')],
-                        [__('site.services_page.flow_3_title'), __('site.services_page.flow_3_body')],
-                    ] as [$title, $description])
-                        <li class="flex gap-5 border-t border-slate-200 py-6 last:border-b dark:border-slate-800">
-                            <span class="mt-1 text-xs font-semibold tracking-[0.18em] text-slate-300 dark:text-slate-600">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                <ol class="mt-6 divide-y divide-slate-200 border-y border-slate-200 dark:divide-slate-800 dark:border-slate-800">
+                    @foreach ($flow as [$title, $description])
+                        <li class="flex gap-5 py-5">
+                            <span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-netware-teal/30 bg-netware-teal/8 text-[11px] font-semibold tabular-nums text-netware-teal">
+                                {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
+                            </span>
                             <div>
-                                <h3 class="text-base font-semibold text-netware-navy dark:text-white">{{ $title }}</h3>
-                                <p class="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ $description }}</p>
+                                <h3 class="text-sm font-semibold text-netware-navy dark:text-white">{{ $title }}</h3>
+                                <p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $description }}</p>
                             </div>
                         </li>
                     @endforeach
                 </ol>
             </div>
 
-            <aside class="lg:col-span-5 lg:pt-14" data-reveal>
-                <div class="rounded-2xl bg-netware-navy p-6 text-white sm:p-7 dark:bg-slate-900 dark:ring-1 dark:ring-white/10">
-                    <h3 class="text-lg font-semibold">{{ __('site.services_page.aside_title') }}</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-white/70">
+            <aside class="lg:col-span-5" data-reveal>
+                <div class="border border-netware-navy/20 bg-netware-navy p-6 text-white dark:border-slate-800 dark:bg-slate-900">
+                    <p class="text-[10px] font-semibold tracking-[0.18em] text-white/50 uppercase">{{ __('site.labels.flow') }}</p>
+                    <h3 class="mt-3 text-lg leading-snug font-semibold">{{ __('site.services_page.aside_title') }}</h3>
+                    <p class="mt-3 text-xs leading-relaxed text-white/70">
                         {{ __('site.services_page.aside_body') }}
                     </p>
                     <a
                         href="https://wa.me/{{ config('netware.whatsapp') }}?text={{ rawurlencode(__('site.whatsapp_message')) }}"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-netware-navy transition-colors duration-200 hover:bg-white/90"
+                        class="mt-5 inline-flex items-center gap-2 bg-white px-5 py-2.5 text-sm font-medium text-netware-navy transition-colors duration-200 hover:bg-white/90"
                     >
                         {{ __('site.actions.consult_whatsapp') }}
                     </a>
+                </div>
+
+                {{-- Fills the remaining height so the column never ends in dead space. --}}
+                <div class="mt-3 border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                    <div class="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
+                        <p class="text-[10px] font-semibold tracking-[0.18em] text-slate-500 uppercase dark:text-slate-400">{{ __('site.services_page.checklist_title') }}</p>
+                    </div>
+
+                    <ol class="divide-y divide-slate-200 dark:divide-slate-800">
+                        @foreach ([__('site.services_page.checklist_1'), __('site.services_page.checklist_2')] as $entry)
+                            <li class="flex items-start gap-3 px-4 py-3">
+                                <svg class="mt-0.5 h-3.5 w-3.5 shrink-0 text-netware-teal" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                                <span class="text-xs leading-relaxed text-slate-600 dark:text-slate-400">{{ $entry }}</span>
+                            </li>
+                        @endforeach
+                    </ol>
+
+                    <p class="border-t border-slate-200 bg-slate-50 px-4 py-3 text-[11px] leading-relaxed text-slate-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
+                        {{ __('site.services_page.checklist_note') }}
+                    </p>
                 </div>
             </aside>
         </div>
     </section>
 
     {{-- Ajakan --}}
-    <section class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-14">
-        <div class="flex flex-wrap items-center justify-between gap-6 rounded-2xl border border-slate-200 bg-white px-6 py-7 sm:px-10 sm:py-8 dark:border-slate-800 dark:bg-slate-900" data-reveal>
+    <section class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+        <div class="flex flex-wrap items-center justify-between gap-6 border border-slate-200 px-6 py-7 sm:px-8 dark:border-slate-800" data-reveal>
             <div class="max-w-xl">
-                <h2 class="text-lg font-semibold text-netware-navy sm:text-xl lg:text-2xl dark:text-white">
+                <h2 class="text-lg font-semibold text-netware-navy sm:text-xl dark:text-white">
                     {{ __('site.services_page.cta_title') }}
                 </h2>
                 <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
@@ -165,7 +213,7 @@
                     href="https://wa.me/{{ config('netware.whatsapp') }}?text={{ rawurlencode(__('site.whatsapp_message')) }}"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 rounded-full bg-netware-navy px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:brightness-110"
+                    class="inline-flex items-center gap-2 bg-netware-navy px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-netware-blue"
                 >
                     {{ __('site.actions.chat_whatsapp') }}
                 </a>
@@ -173,7 +221,7 @@
                     href="https://instagram.com/{{ config('netware.instagram') }}"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-medium text-netware-navy transition-colors duration-200 hover:border-netware-teal hover:text-netware-teal dark:border-slate-700 dark:text-white dark:hover:border-netware-teal"
+                    class="inline-flex items-center gap-2 border border-slate-300 px-5 py-2.5 text-sm font-medium text-netware-navy transition-colors duration-200 hover:border-netware-teal hover:text-netware-teal dark:border-slate-700 dark:text-white"
                 >
                     Instagram
                 </a>

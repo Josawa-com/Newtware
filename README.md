@@ -53,6 +53,22 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## Local Network Preview
+
+For quick testing on other devices on the same Wi‑Fi network you can start the Laravel dev server on all interfaces.
+
+```bash
+# Make sure Vite assets are built (if you haven't already)
+npm run build
+
+# Run the helper script (creates/updates APP_URL to your local IP and starts the server)
+./run-local.sh
+```
+
+Then open a browser on your phone and navigate to `http://<your‑IP>:8000`.
+
+(Replace `<your‑IP>` with the IPv4 address shown when the script starts.)
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

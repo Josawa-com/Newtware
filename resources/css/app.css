@@ -178,6 +178,59 @@ html.js [data-reveal].is-visible {
     }
 }
 
+/*
+ * Animated circuit background for catalogue heroes: faint traces that light up
+ * in sequence, so the page has motion without moving any content.
+ */
+@keyframes circuit-glow {
+    0%,
+    100% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 0.85;
+    }
+}
+
+.circuit-glow {
+    animation: circuit-glow 4.5s ease-in-out infinite;
+}
+
+.circuit-glow-2 {
+    animation-duration: 6s;
+    animation-delay: 0.8s;
+}
+
+.circuit-glow-3 {
+    animation-duration: 7.5s;
+    animation-delay: 1.6s;
+}
+
+/* Thin progress line that fills while the catalogue scrolls into view. */
+@keyframes scan-line {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.scan-line {
+    animation: scan-line 7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .circuit-glow,
+    .circuit-glow-2,
+    .circuit-glow-3,
+    .scan-line {
+        animation: none;
+    }
+}
+
 /* Header gains depth once the page is scrolled. */
 [data-header].is-scrolled {
     border-bottom-color: rgb(203 213 225 / 0.9);
@@ -220,7 +273,12 @@ html.js [data-reveal].is-visible {
     animation-play-state: paused;
 }
 
-/* Slow drift for the soft colour orbs behind the hero. */
+/*
+ * Slow drift for the soft colour orbs behind the hero. The orbs are heavily
+ * blurred, so they are promoted to their own layer and kept inside a fixed-size
+ * container; animating a blurred layer that repaints an entire long page makes
+ * some browsers skip painting the content beneath it.
+ */
 @keyframes orb-drift {
     0%,
     100% {
@@ -230,6 +288,13 @@ html.js [data-reveal].is-visible {
     50% {
         transform: translate3d(-18px, 22px, 0) scale(1.06);
     }
+}
+
+.orb-drift,
+.orb-drift-slow {
+    backface-visibility: hidden;
+    will-change: transform;
+    contain: paint;
 }
 
 .orb-drift {

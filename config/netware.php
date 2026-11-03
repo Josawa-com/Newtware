@@ -7,12 +7,13 @@ return [
     | Contact
     |--------------------------------------------------------------------------
     |
-    | TODO: Ganti nomor WhatsApp dan akun Instagram di bawah dengan data
-    | Netware yang sebenarnya. Nomor WhatsApp ditulis tanpa "+" dan spasi.
+    | Nomor WhatsApp Netware, dipakai untuk tautan wa.me (tanpa "+" dan spasi).
+    | Nomornya sengaja tidak ditampilkan di halaman; pengunjung menekan tombol
+    | WhatsApp yang tersedia untuk langsung membuka percakapan.
     |
     */
 
-    'whatsapp' => env('NETWARE_WHATSAPP', '6280000000000'),
+    'whatsapp' => env('NETWARE_WHATSAPP', '6285191249364'),
 
     'instagram' => env('NETWARE_INSTAGRAM', 'netware'),
 

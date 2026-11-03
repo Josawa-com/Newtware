@@ -1,0 +1,87 @@
+<?php
+
+return [
+
+    'nav' => [
+        'home' => 'Beranda',
+        'products' => 'Barang',
+        'services' => 'Layanan',
+        'testimonials' => 'Testimoni',
+    ],
+
+    'actions' => [
+        'consult' => 'Konsultasi',
+        'chat_whatsapp' => 'Chat WhatsApp',
+        'consult_whatsapp' => 'Konsultasi via WhatsApp',
+        'view_services' => 'Lihat layanan',
+        'all_services' => 'Semua layanan',
+        'switch_language' => 'Ganti bahasa',
+        'switch_theme' => 'Ganti tema terang atau gelap',
+    ],
+
+    'labels' => [
+        'experience' => 'Pengalaman',
+        'services' => 'Layanan',
+        'open_hours' => 'Jam buka',
+        'years' => 'tahun',
+        'service_types' => 'jenis jasa',
+        'managed_by' => 'Dikelola oleh',
+        'serves' => 'Melayani',
+        'pages' => 'Halaman',
+        'contact' => 'Kontak',
+        'hours' => 'Jam operasional',
+        'open' => 'Buka',
+        'close' => 'Tutup',
+        'flow' => 'Alur layanan',
+        'profile' => 'Profil',
+        'steps' => '3 langkah',
+        'service_list' => 'Daftar jasa',
+        'all_rights' => 'Hak cipta dilindungi.',
+    ],
+
+    'home' => [
+        'badge' => 'Unit Produksi SMK Negeri 1 Bantul',
+        'title_1' => 'Perangkat bermasalah?',
+        'title_2' => 'Serahkan pada siswa TKJ.',
+        'lead' => 'Netware melayani instalasi sistem operasi, perbaikan laptop, HP, dan PC untuk warga sekolah. Dikerjakan langsung oleh siswa Teknik Komputer dan Jaringan dengan pendampingan guru.',
+        'flow_1_title' => 'Chat WhatsApp',
+        'flow_1_body' => 'Ceritakan keluhan atau kebutuhan perangkatmu.',
+        'flow_2_title' => 'Datang ke lokasi',
+        'flow_2_body' => 'Perangkat dibawa langsung ke Netware di lingkungan sekolah.',
+        'flow_3_title' => 'Pemeriksaan',
+        'flow_3_body' => 'Kondisi perangkat diperiksa sebelum pekerjaan disepakati.',
+        'flow_note' => 'WhatsApp hanya untuk konsultasi. Pemesanan dikonfirmasi setelah perangkat diperiksa.',
+        'network_title' => 'Jaringan',
+        'network_status' => 'Terhubung',
+        'profile_title' => 'Tumbuh dari ruang praktik TKJ.',
+        'profile_lead' => 'Netware merupakan Unit Produksi (UP) di bawah naungan SMK Negeri 1 Bantul Yogyakarta.',
+        'profile_p1' => 'Dengan pengalaman lebih dari 5 tahun melayani pelanggan di sektor sekolah, baik layanan kepada siswa, guru, karyawan maupun tamu yang berkunjung. Berawal dari lingkup jurusan Teknik Komputer dan Jaringan kini Netware telah hadir dan semakin meluas menjangkau area sekolah SMK Negeri 1 Bantul.',
+        'profile_p2' => 'Pelayanan terbaik dari sisi kualitas, memuaskan pelanggan dengan harga yang terjangkau merupakan tujuan utama kami. Diwakili oleh sumber daya siswa TKJ yang ahli di bidangnya, kami mendedikasikan diri untuk memberikan kualitas terbaik dari sisi pelayanan maupun perbaikan perangkat gawai pelanggan.',
+        'profile_quote' => 'Pengalaman kami dalam teknologi informasi mendorong kami terus aktif dalam berinovasi memberikan layanan penyedia paket internet dan service perangkat HP dan laptop pelanggan.',
+        'services_title' => 'Yang bisa kami kerjakan',
+    ],
+
+    'services_page' => [
+        'title_1' => 'Dipasang, diperbaiki,',
+        'title_2' => 'siap dipakai.',
+        'lead' => 'Enam jasa instalasi dan perbaikan yang dikerjakan siswa Teknik Komputer dan Jaringan, pendampingan guru, dan tarif ramah kantong sekolah.',
+        'flow_title' => 'Dari keluhan sampai perangkat kembali normal',
+        'flow_1_title' => 'Hubungi WhatsApp',
+        'flow_1_body' => 'Sampaikan masalah atau kebutuhan perangkat melalui WhatsApp untuk konsultasi awal.',
+        'flow_2_title' => 'Datang ke lokasi',
+        'flow_2_body' => 'Perangkat dibawa langsung ke Netware di lingkungan SMK Negeri 1 Bantul.',
+        'flow_3_title' => 'Pemeriksaan perangkat',
+        'flow_3_body' => 'Kondisi perangkat diperiksa langsung sebelum pekerjaan disepakati.',
+        'aside_title' => 'Kenapa lewat WhatsApp dulu?',
+        'aside_body' => 'Kerusakan perangkat perlu dilihat dulu agar penanganannya tepat. Lewat chat kami memahami gejala, lalu menentukan apakah perangkat perlu dibawa ke lokasi. Tidak ada biaya tanpa kesepakatan.',
+        'cta_title' => 'Ada perangkat yang perlu diperiksa?',
+        'cta_body' => 'Konsultasikan dulu lewat WhatsApp atau jelajahi juga layanan lain yang kami sediakan.',
+    ],
+
+    'footer' => [
+        'about' => 'Unit Produksi Teknik Komputer dan Jaringan SMK Negeri 1 Bantul. Instalasi, perbaikan, dan konsultasi perangkat oleh siswa TKJ.',
+    ],
+
+    'whatsapp_message' => 'Halo Netware, saya ingin berkonsultasi mengenai perangkat saya.',
+
+];

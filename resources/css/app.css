@@ -3,6 +3,36 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+/*
+ * Dark mode follows a class on <html> instead of the OS setting, because the
+ * visitor switches it manually.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Tampilan desktop diskalakan 1.3x, setara menekan Ctrl + sekali di browser.
+ * Karena ukuran Tailwind berbasis rem, menaikkan ukuran font akar ikut
+ * menskalakan teks, jarak, dan tinggi komponen secara proporsional.
+ *
+ * Layar kecil sengaja tidak ikut diskalakan: pada lebar 390px, skala 1.3x
+ * membuat judul membengkak dan satu hero memenuhi lebih dari dua layar.
+ */
+html {
+    font-size: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 115%;
+    }
+}
+
+@media (min-width: 1024px) {
+    html {
+        font-size: 130%;
+    }
+}
+
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
@@ -10,4 +40,342 @@
     --color-netware-teal: #167d94;
     --color-netware-blue: #266594;
     --color-netware-navy: #335095;
+
+    --color-netware-mist: #eff7f8;
+    --color-netware-sand: #fdf7ec;
+    --color-netware-amber: #dd9b34;
+}
+
+/*
+ * Reveal on scroll. Sections only stay hidden when JavaScript is running, so a
+ * failed script can never leave the page blank.
+ */
+[data-reveal] {
+    opacity: 1;
+    transform: none;
+}
+
+html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.js [data-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/*
+ * Animated network panel under the service-flow card: a chip talks to a Wi-Fi
+ * node through moving data lines. All motion is SVG-only, so it costs almost
+ * nothing to render.
+ */
+@keyframes data-flow {
+    to {
+        stroke-dashoffset: -64;
+    }
+}
+
+@keyframes node-pulse {
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(0.85);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+}
+
+@keyframes orbit-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes wifi-wave {
+    0% {
+        opacity: 0;
+        transform: scale(0.55);
+    }
+
+    35% {
+        opacity: 0.9;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.3);
+    }
+}
+
+.data-flow {
+    stroke-dasharray: 5 11;
+    animation: data-flow 1.8s linear infinite;
+}
+
+.data-flow-slow {
+    animation-duration: 2.6s;
+}
+
+.node-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: node-pulse 2.4s ease-in-out infinite;
+}
+
+.node-pulse-fast {
+    animation-duration: 1.5s;
+}
+
+.orbit-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: orbit-spin 14s linear infinite;
+}
+
+.wifi-wave {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: wifi-wave 2.8s ease-out infinite;
+}
+
+.wifi-wave-2 {
+    animation-delay: 0.35s;
+}
+
+.wifi-wave-3 {
+    animation-delay: 0.7s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .data-flow,
+    .data-flow-slow,
+    .node-pulse,
+    .node-pulse-fast,
+    .orbit-ring,
+    .wifi-wave,
+    .wifi-wave-2,
+    .wifi-wave-3 {
+        animation: none;
+    }
+
+    .wifi-wave {
+        opacity: 0.7;
+    }
+}
+
+/* Header gains depth once the page is scrolled. */
+[data-header].is-scrolled {
+    border-bottom-color: rgb(203 213 225 / 0.9);
+    box-shadow: 0 18px 40px -32px rgb(15 23 42 / 0.55);
+}
+
+/* Sweeping light across the floating WhatsApp button, repeating every 6s. */
+@keyframes wa-sheen {
+    0% {
+        transform: translateX(-170%) skewX(-18deg);
+    }
+
+    100% {
+        transform: translateX(430%) skewX(-18deg);
+    }
+}
+
+.wa-sheen {
+    animation: wa-sheen 6s linear infinite;
+}
+
+/* Endless marquee: the track holds two copies of the content, so shifting it
+   by half its width loops seamlessly. */
+@keyframes marquee-scroll {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+.marquee-track {
+    animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+}
+
+/* Slow drift for the soft colour orbs behind the hero. */
+@keyframes orb-drift {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate3d(-18px, 22px, 0) scale(1.06);
+    }
+}
+
+.orb-drift {
+    animation: orb-drift 16s ease-in-out infinite;
+}
+
+.orb-drift-slow {
+    animation: orb-drift 22s ease-in-out infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wa-sheen,
+    .marquee-track,
+    .orb-drift,
+    .orb-drift-slow {
+        animation: none;
+    }
+}
+
+/*
+ * Theme switching uses the View Transitions API: the browser snapshots the old
+ * and new palette, then reveals the new one through a circle that grows out of
+ * the yin-yang toggle. Because the whole transition runs on the compositor it
+ * stays smooth even on long pages.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 2;
+    animation: theme-reveal 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes theme-reveal {
+    from {
+        clip-path: circle(0% at var(--theme-x, 50%) var(--theme-y, 0%));
+    }
+
+    to {
+        clip-path: circle(var(--theme-radius, 150%) at var(--theme-x, 50%) var(--theme-y, 0%));
+    }
+}
+
+/*
+ * While a theme View Transition runs, every element transition is muted. The
+ * snapshot already handles the colour change, and letting dozens of per-element
+ * transitions fire at the same time is what made the switch look steppy.
+ */
+html.theme-switching *:not([data-theme-toggle], [data-theme-toggle] *) {
+    transition: none !important;
+}
+
+/* Fallback for browsers without View Transitions. */
+html:not(.vt-supported) body,
+html:not(.vt-supported) header,
+html:not(.vt-supported) footer,
+html:not(.vt-supported) main section {
+    transition:
+        background-color 320ms ease,
+        border-color 320ms ease,
+        color 320ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-new(root) {
+        animation: none;
+    }
+
+    html:not(.vt-supported) body,
+    html:not(.vt-supported) header,
+    html:not(.vt-supported) footer,
+    html:not(.vt-supported) main section {
+        transition: none;
+    }
+}
+
+/*
+ * Language switch: one band of colour sweeps from the top of the screen to the
+ * bottom, the request happens while the screen is covered, and the band keeps
+ * travelling off-screen on the new page. Nothing else animates, so the layout
+ * stays perfectly still and the scroll position is preserved.
+ */
+.locale-sweep {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: none;
+    pointer-events: none;
+    background: linear-gradient(to bottom, #167d94, #266594 55%, #335095);
+    will-change: transform;
+}
+
+/* Bright leading edge, like a scanner passing over the page. */
+.locale-sweep::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 3px;
+    background: #ffffff;
+    box-shadow: 0 0 28px 8px rgb(255 255 255 / 0.5);
+}
+
+html[data-locale-phase='out'] .locale-sweep {
+    display: block;
+    transform-origin: top;
+    animation: locale-sweep-down 300ms cubic-bezier(0.55, 0, 0.35, 1) forwards;
+}
+
+html[data-locale-phase='in'] .locale-sweep {
+    display: block;
+    transform-origin: bottom;
+    animation: locale-sweep-away 360ms cubic-bezier(0.55, 0, 0.35, 1) forwards;
+}
+
+@keyframes locale-sweep-down {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes locale-sweep-away {
+    from {
+        transform: scaleY(1);
+    }
+
+    to {
+        transform: scaleY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html[data-locale-phase='out'] .locale-sweep,
+    html[data-locale-phase='in'] .locale-sweep {
+        display: none;
+        animation: none;
+    }
 }

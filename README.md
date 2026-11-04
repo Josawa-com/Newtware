@@ -69,6 +69,71 @@ Then open a browser on your phone and navigate to `http://<your‑IP>:8000`.
 
 (Replace `<your‑IP>` with the IPv4 address shown when the script starts.)
 
+## Local Network Preview (akses dari HP)
+
+Aplikasi ini otomatis disajikan di jaringan Wi‑Fi lokal pada port **8000**
+lewat systemd user service `netware-lan`, jadi Anda tidak perlu menjalankan
+apa pun secara manual.
+
+**Alamat yang dibuka di HP:**
+
+```
+http://192.168.1.8:8000
+```
+
+(IP bisa berubah kalau router memberi alamat baru. Lihat IP terbaru dengan
+`hostname -I | awk '{print $1}'` atau dari `./run-local.sh`.)
+
+### Cara pakai sehari-hari
+
+```bash
+./run-local.sh            # cek alamat + pastikan server hidup
+./run-local.sh 8080       # (opsional) pakai port lain
+```
+
+Perintah lain untuk mengelola server:
+
+```bash
+systemctl --user status  netware-lan    # cek status
+systemctl --user restart netware-lan    # restart
+systemctl --user stop    netware-lan    # berhenti
+```
+
+Service ini otomatis hidup lagi setelah login/reboot, dan otomatis
+restart kalau prosesnya mati. Log ada di `/tmp/opencode/netware-lan.log`.
+
+### Hal yang perlu diketahui
+
+- **Jangan** menjalankan `npm run dev` / `composer run dev` saat mengakses
+  dari HP. Mode itu membuat `public/hot` berisi `http://127.0.0.1:5173`
+  yang tidak bisa dijangkau HP (aset jadi gagal dimuat). `run-local.sh`
+  dan service otomatis menghapus file itu dan memakai hasil `npm run build`.
+- **Port 8000 dipakai bersama proyek lain.** Proyek `LocalCulture`
+  (`/home/syandana/Documents/Rezka/LocalCulture`) memakai port 8000 lewat
+  Docker dan sebelumnya membuat HP menampilkan "Culture Raya" bukan
+  Netware. Container itu sudah dihentikan dan `restart` diset `no`.
+  Kalau ingin menjalankan keduanya bersamaan, ubah port Culture Raya:
+
+  ```bash
+  cd /home/syandana/Documents/Rezka/LocalCulture
+  APP_PORT=8081 docker compose up -d
+  ```
+
+  `scripts/lan-prepare.sh` juga akan menghentikan container yang menyerobot
+  port 8000 saat service dinyalakan.
+- **Firewall / VPN.** Jika HP tetap tidak bisa membuka alamatnya, izinkan
+  port 8000 (`sudo ufw allow 8000`) dan pastikan router tidak mengaktifkan
+  *AP/client isolation*. Cloudflare WARP di mesin ini tidak memblokir
+  trafik LAN (rute `192.168.1.0/24` tetap lewat Wi‑Fi).
+
+## Full setup & launch
+
+If this repository is fresh on a machine, run the one‑liner below. It will install PHP & JS dependencies, create the SQLite file, run migrations (if any), build assets and finally launch the server on your LAN.
+
+```bash
+./setup-and-serve.sh
+```
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

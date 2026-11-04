@@ -28,7 +28,7 @@
         <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(51,80,149,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(51,80,149,0.055)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent)] dark:bg-[linear-gradient(to_right,rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.12)_1px,transparent_1px)]"></div>
 
         {{-- Animated circuit traces: static paths, blinking nodes. --}}
-        <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1200 260" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="pointer-events-none absolute inset-0 hidden h-full w-full opacity-70 [mask-image:linear-gradient(to_right,transparent_30%,black_62%)] lg:block" viewBox="0 0 1200 260" preserveAspectRatio="none" aria-hidden="true">
             <g fill="none" stroke="#167d94" stroke-width="1">
                 <path d="M0 210 H180 L240 150 H430" class="circuit-glow" />
                 <path d="M0 120 H90 L150 60 H320 L380 120 H560" class="circuit-glow circuit-glow-2" />
@@ -160,12 +160,8 @@
                                 {{ $categories[$item['category']][app()->getLocale()] ?? $categories[$item['category']]['id'] }}
                             </span>
 
-                            @if ($item['price'] !== null)
-                                <span class="absolute top-0 right-0 flex items-center gap-1 bg-white/90 px-2 py-1 text-[10px] font-semibold tracking-wide text-emerald-700 uppercase backdrop-blur-sm dark:bg-slate-900/90 dark:text-emerald-400">
-                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                    {{ __('products.barang.available') }}
-                                </span>
-                            @endif                        </div>
+                            {{-- Priced items already show the price and a check mark below, so no badge is needed here. --}}
+                        </div>
 
                         <div class="flex flex-1 flex-col border-t border-slate-200 p-4 dark:border-slate-800">
                             <p class="text-[10px] tabular-nums tracking-[0.14em] text-slate-400 uppercase">

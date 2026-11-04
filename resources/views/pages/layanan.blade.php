@@ -18,7 +18,7 @@
     <section class="relative overflow-hidden border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
         <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(51,80,149,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(51,80,149,0.055)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent)] dark:bg-[linear-gradient(to_right,rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.12)_1px,transparent_1px)]"></div>
 
-        <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1200 360" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="pointer-events-none absolute inset-0 hidden h-full w-full opacity-70 [mask-image:linear-gradient(to_right,transparent_30%,black_62%)] lg:block" viewBox="0 0 1200 360" preserveAspectRatio="none" aria-hidden="true">
             <g fill="none" stroke="#167d94" stroke-width="1">
                 <path d="M0 300 H220 L290 230 H480" class="circuit-glow" />
                 <path d="M0 150 H110 L170 90 H350 L410 150 H600" class="circuit-glow circuit-glow-2" />

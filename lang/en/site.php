@@ -58,6 +58,15 @@ return [
         'profile_p1' => 'With more than 5 years of experience serving customers in the school sector — students, teachers, staff, and visiting guests — Netware started inside the Computer and Network Engineering department and now reaches the wider school area of SMK Negeri 1 Bantul.',
         'profile_p2' => 'Delivering the best quality and satisfying customers at an affordable price is our main goal. Represented by skilled TKJ students, we dedicate ourselves to the best quality in both service and device repair.',
         'profile_quote' => 'Our experience in information technology keeps us innovating: providing internet packages and servicing customers\' phones and laptops.',
+        'marquee' => [
+            'OS Installation',
+            'Laptop Repair',
+            'Phone Repair',
+            'iPhone Repair',
+            'Keyboard Fitting',
+            'PC Repair',
+        ],
+        'queue_label' => 'Queue',
         'services_title' => 'What we can do',
     ],
 

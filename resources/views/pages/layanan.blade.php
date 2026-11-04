@@ -74,7 +74,7 @@
                     </dl>
 
                     <p class="border-t border-slate-200 bg-netware-sand px-4 py-3 text-[11px] leading-relaxed text-amber-900 dark:border-slate-800 dark:bg-amber-500/10 dark:text-amber-200/90">
-                        {{ config('netware.hours.note') }}
+                        {{ config('netware.hours.note')[app()->getLocale()] ?? config('netware.hours.note.id') }}
                     </p>
 
                     <a
@@ -119,8 +119,8 @@
                         </svg>
                     </div>
 
-                    <h3 class="mt-4 text-sm font-semibold text-netware-navy dark:text-white">{{ $service['name'] }}</h3>
-                    <p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $service['description'] }}</p>
+                    <h3 class="mt-4 text-sm font-semibold text-netware-navy dark:text-white">{{ $service['name'][app()->getLocale()] ?? $service['name']['id'] }}</h3>
+                    <p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $service['description'][app()->getLocale()] ?? $service['description']['id'] }}</p>
                 </li>
             @endforeach
         </ol>

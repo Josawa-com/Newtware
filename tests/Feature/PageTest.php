@@ -31,7 +31,21 @@ class PageTest extends TestCase
         $response = $this->get(route('layanan'));
 
         foreach (config('netware.services') as $service) {
-            $response->assertSee($service['name']);
+            $response->assertSee($service['name']['id']);
+        }
+    }
+
+    public function test_home_and_layanan_pages_translate_service_names(): void
+    {
+        $this->post(route('locale.switch'), ['locale' => 'en'])->assertRedirect();
+
+        foreach (['beranda', 'layanan'] as $route) {
+            $response = $this->get(route($route));
+
+            foreach (config('netware.services') as $service) {
+                $response->assertSee($service['name']['en'])
+                    ->assertSee($service['description']['en']);
+            }
         }
     }
 

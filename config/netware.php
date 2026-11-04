@@ -27,39 +27,64 @@ return [
         'open' => '07.30',
         'close' => '15.00',
         'timezone' => 'WIB',
-        'note' => 'Pukul 14.30–15.00 biasanya digunakan untuk rekap, namun pelanggan masih dapat dilayani.',
+        'note' => [
+            'id' => 'Pukul 14.30–15.00 biasanya digunakan untuk rekap, namun pelanggan masih dapat dilayani.',
+            'en' => 'Between 14.30 and 15.00 we usually wrap up admin work, but customers can still be served.',
+        ],
     ],
 
     /*
     |--------------------------------------------------------------------------
     | Services
     |--------------------------------------------------------------------------
+    |
+    | Setiap layanan menyimpan nama dan deskripsi dalam dua bahasa. Ambil
+    | dengan [$field][app()->getLocale()] agar halaman mengikuti bahasa aktif.
+    |
     */
 
     'services' => [
         [
-            'name' => 'Instalasi OS Windows',
-            'description' => 'Pemasangan sistem operasi Windows pada perangkat pelanggan.',
+            'name' => ['id' => 'Instalasi OS Windows', 'en' => 'Windows installation'],
+            'description' => [
+                'id' => 'Pemasangan sistem operasi Windows pada perangkat pelanggan.',
+                'en' => 'Installing the Windows operating system on a customer device.',
+            ],
         ],
         [
-            'name' => 'Pemasangan keyboard',
-            'description' => 'Penggantian atau pemasangan keyboard laptop.',
+            'name' => ['id' => 'Pemasangan keyboard', 'en' => 'Keyboard replacement'],
+            'description' => [
+                'id' => 'Penggantian atau pemasangan keyboard laptop.',
+                'en' => 'Replacing or fitting a laptop keyboard.',
+            ],
         ],
         [
-            'name' => 'Service laptop',
-            'description' => 'Perbaikan perangkat laptop, mulai dari diagnosa hingga penanganan kerusakan.',
+            'name' => ['id' => 'Service laptop', 'en' => 'Laptop repair'],
+            'description' => [
+                'id' => 'Perbaikan perangkat laptop, mulai dari diagnosa hingga penanganan kerusakan.',
+                'en' => 'Laptop repairs, from diagnosis through to fixing the fault.',
+            ],
         ],
         [
-            'name' => 'Service HP Android',
-            'description' => 'Perbaikan perangkat Android.',
+            'name' => ['id' => 'Service HP Android', 'en' => 'Android phone repair'],
+            'description' => [
+                'id' => 'Perbaikan perangkat Android.',
+                'en' => 'Repairs for Android devices.',
+            ],
         ],
         [
-            'name' => 'Service iPhone',
-            'description' => 'Perbaikan perangkat iPhone.',
+            'name' => ['id' => 'Service iPhone', 'en' => 'iPhone repair'],
+            'description' => [
+                'id' => 'Perbaikan perangkat iPhone.',
+                'en' => 'Repairs for iPhone devices.',
+            ],
         ],
         [
-            'name' => 'Service PC',
-            'description' => 'Penanganan disesuaikan dengan kebutuhan melalui konsultasi terlebih dahulu.',
+            'name' => ['id' => 'Service PC', 'en' => 'PC repair'],
+            'description' => [
+                'id' => 'Penanganan disesuaikan dengan kebutuhan melalui konsultasi terlebih dahulu.',
+                'en' => 'Handled to suit your needs, starting with a short consultation.',
+            ],
         ],
     ],
 

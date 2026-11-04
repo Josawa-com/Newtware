@@ -58,6 +58,15 @@ return [
         'profile_p1' => 'Dengan pengalaman lebih dari 5 tahun melayani pelanggan di sektor sekolah, baik layanan kepada siswa, guru, karyawan maupun tamu yang berkunjung. Berawal dari lingkup jurusan Teknik Komputer dan Jaringan kini Netware telah hadir dan semakin meluas menjangkau area sekolah SMK Negeri 1 Bantul.',
         'profile_p2' => 'Pelayanan terbaik dari sisi kualitas, memuaskan pelanggan dengan harga yang terjangkau merupakan tujuan utama kami. Diwakili oleh sumber daya siswa TKJ yang ahli di bidangnya, kami mendedikasikan diri untuk memberikan kualitas terbaik dari sisi pelayanan maupun perbaikan perangkat gawai pelanggan.',
         'profile_quote' => 'Pengalaman kami dalam teknologi informasi mendorong kami terus aktif dalam berinovasi memberikan layanan penyedia paket internet dan service perangkat HP dan laptop pelanggan.',
+        'marquee' => [
+            'Instalasi OS',
+            'Service Laptop',
+            'Service HP',
+            'Service iPhone',
+            'Pemasangan Keyboard',
+            'Service PC',
+        ],
+        'queue_label' => 'Antrean',
         'services_title' => 'Yang bisa kami kerjakan',
     ],
 

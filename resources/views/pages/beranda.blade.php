@@ -171,7 +171,7 @@
                     </svg>
 
                     <div class="mt-2 grid grid-cols-3 divide-x divide-slate-200 border-t border-slate-200 pt-2 dark:divide-slate-800 dark:border-slate-800">
-                        @foreach ([['LAN', '100 Mbps'], ['Uptime', '99,9%'], ['Antrean', '0']] as [$label, $value])
+                        @foreach ([['LAN', '100 Mbps'], ['Uptime', '99,9%'], [__('site.home.queue_label'), '0']] as [$label, $value])
                             <div class="{{ $loop->first ? 'pr-3' : ($loop->last ? 'pl-3' : 'px-3') }}">
                                 <p class="text-[10px] tracking-[0.14em] text-slate-400 uppercase">{{ $label }}</p>
                                 <p class="mt-0.5 text-sm font-semibold tabular-nums text-netware-navy dark:text-white">{{ $value }}</p>
@@ -188,7 +188,7 @@
         <div class="marquee-track flex w-max items-center gap-8 whitespace-nowrap">
             @foreach ([1, 2] as $copy)
                 <div @class(['flex items-center gap-8', 'pr-8' => $copy === 2])>
-                    @foreach (['Instalasi OS', 'Service Laptop', 'Service HP', 'Service iPhone', 'Pemasangan Keyboard', 'Service PC'] as $word)
+                    @foreach (__('site.home.marquee') as $word)
                         <span class="flex items-center gap-8 text-xs font-medium tracking-[0.12em] text-white/80 uppercase">
                             {{ $word }}
                             <span class="h-1 w-1 bg-netware-teal"></span>
@@ -280,8 +280,8 @@
                             </svg>
                         </div>
 
-                        <h3 class="mt-4 text-sm font-semibold text-netware-navy dark:text-white">{{ $service['name'] }}</h3>
-                        <p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $service['description'] }}</p>
+                        <h3 class="mt-4 text-sm font-semibold text-netware-navy dark:text-white">{{ $service['name'][app()->getLocale()] ?? $service['name']['id'] }}</h3>
+                        <p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $service['description'][app()->getLocale()] ?? $service['description']['id'] }}</p>
                     </li>
                 @endforeach
             </ul>

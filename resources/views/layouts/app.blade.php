@@ -91,7 +91,7 @@
     </head>
     <body class="flex min-h-screen flex-col bg-white font-sans text-slate-700 antialiased dark:bg-slate-950 dark:text-slate-300">
         <header
-            class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur transition-shadow duration-300 dark:border-slate-800 dark:bg-slate-950/85"
+            class="sticky top-0 z-50 border-b border-slate-300/70 bg-white/85 backdrop-blur transition-shadow duration-300 dark:border-slate-700 dark:bg-slate-950/85"
             data-header
         >
             <div class="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:gap-8 sm:px-6 lg:px-8">
@@ -101,7 +101,7 @@
                 </a>
 
                 <nav
-                    class="relative hidden h-full items-center md:flex lg:absolute lg:left-1/2 lg:-translate-x-1/2"
+                    class="relative hidden h-full items-center md:absolute md:left-1/2 md:flex md:-translate-x-1/2"
                     aria-label="{{ __('site.nav.home') }}"
                     data-nav
                 >
@@ -114,7 +114,7 @@
                         <a
                             href="{{ route($routeName) }}"
                             @class([
-                                'relative flex h-full items-center px-4 text-sm transition-colors duration-200',
+                                'relative flex h-full items-center px-2 text-sm transition-colors duration-200 lg:px-4',
                                 'font-semibold text-netware-navy dark:text-white' => request()->routeIs($routeName),
                                 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white' => ! request()->routeIs($routeName),
                             ])
@@ -147,23 +147,23 @@
         <footer class="relative overflow-hidden bg-netware-navy text-white dark:bg-slate-900">
             <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-netware-teal via-netware-blue to-netware-navy"></div>
 
-            <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-                <div class="grid gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-12 lg:gap-8">
-                    <div class="lg:col-span-5">
-                        <a href="{{ route('beranda') }}" class="inline-flex items-center gap-3">
-                            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white">
-                                <img src="{{ asset('netware-mark.png') }}" alt="" class="h-7 w-auto" aria-hidden="true">
+            <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+                <div class="grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-12 lg:gap-8">
+                    <div class="col-span-2 sm:col-span-1 lg:col-span-5">
+                        <a href="{{ route('beranda') }}" class="inline-flex items-center gap-2.5">
+                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white">
+                                <img src="{{ asset('netware-mark.png') }}" alt="" class="h-6 w-auto" aria-hidden="true">
                             </span>
-                            <img src="{{ asset('NetwareTeks.png') }}" alt="{{ config('app.name', 'Netware') }}" class="h-4 w-auto brightness-0 invert">
+                            <img src="{{ asset('NetwareTeks.png') }}" alt="{{ config('app.name', 'Netware') }}" class="h-3.5 w-auto brightness-0 invert">
                         </a>
-                        <p class="mt-5 max-w-sm text-sm leading-relaxed text-white/65">
+                        <p class="mt-3 max-w-sm text-xs leading-relaxed text-white/60">
                             {{ __('site.footer.about') }}
                         </p>
                     </div>
 
                     <div class="lg:col-span-3">
-                        <h2 class="text-xs font-semibold tracking-[0.18em] text-white/45 uppercase">{{ __('site.labels.pages') }}</h2>
-                        <ul class="mt-4 space-y-2.5">
+                        <h2 class="text-[10px] font-semibold tracking-[0.18em] text-white/45 uppercase">{{ __('site.labels.pages') }}</h2>
+                        <ul class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1">
                             @foreach ([
                                 'beranda' => __('site.nav.home'),
                                 'barang' => __('site.nav.products'),
@@ -174,9 +174,9 @@
                                     <a
                                         href="{{ route($routeName) }}"
                                         @class([
-                                            'text-sm transition-colors duration-200',
-                                            'font-medium text-white' => request()->routeIs($routeName),
-                                            'text-white/65 hover:text-white' => ! request()->routeIs($routeName),
+                                            'text-xs transition-colors duration-200',
+                                            'font-semibold text-white' => request()->routeIs($routeName),
+                                            'text-white/60 hover:text-white' => ! request()->routeIs($routeName),
                                         ])
                                     >
                                         {{ $label }}
@@ -187,40 +187,52 @@
                     </div>
 
                     <div class="lg:col-span-4">
-                        <h2 class="text-xs font-semibold tracking-[0.18em] text-white/45 uppercase">{{ __('site.labels.contact') }}</h2>
-                        <ul class="mt-4 space-y-2.5 text-sm">
-                            <li>
-                                <a
-                                    href="https://wa.me/{{ config('netware.whatsapp') }}?text={{ rawurlencode(__('site.whatsapp_message')) }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex items-center gap-2 text-white/65 transition-colors duration-200 hover:text-white"
-                                >
-                                    WhatsApp
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://instagram.com/{{ config('netware.instagram') }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex items-center gap-2 text-white/65 transition-colors duration-200 hover:text-white"
-                                >
-                                    Instagram
-                                </a>
-                            </li>
-                            <li class="pt-1 text-white/65">
+                        <h2 class="text-[10px] font-semibold tracking-[0.18em] text-white/45 uppercase">{{ __('site.labels.contact') }}</h2>
+
+                        <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+                            <a
+                                href="https://wa.me/{{ config('netware.whatsapp') }}?text={{ rawurlencode(__('site.whatsapp_message')) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-white/60 transition-colors duration-200 hover:text-white"
+                            >
+                                WhatsApp
+                            </a>
+                            <a
+                                href="https://instagram.com/{{ config('netware.instagram') }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-white/60 transition-colors duration-200 hover:text-white"
+                            >
+                                Instagram
+                            </a>
+                            <span class="tabular-nums text-white/60">
                                 {{ config('netware.hours.open') }}–{{ config('netware.hours.close') }} {{ config('netware.hours.timezone') }}
-                            </li>
-                        </ul>
+                            </span>
+                        </div>
+
+                        {{-- The floating WhatsApp button already covers this on
+                             phones, so the CTA only appears from small screens up. --}}
+                        <a
+                            href="https://wa.me/{{ config('netware.whatsapp') }}?text={{ rawurlencode(__('site.whatsapp_message')) }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="mt-3 hidden items-center gap-2 border border-white/25 px-3 py-1.5 text-xs font-semibold transition-colors duration-200 hover:border-white/50 hover:bg-white/10 sm:inline-flex"
+                        >
+                            {{ __('site.actions.chat_whatsapp') }}
+                            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
-                <div class="mt-12 flex flex-col items-center gap-2 border-t border-white/10 pt-6 pb-20 md:pb-0">
-                    <p class="text-center text-sm text-white/55">
+                <div class="mt-5 border-t border-white/10 pt-3 pb-20 md:pb-0">
+                    <p class="text-center text-[11px] text-white/50">
                         &copy; {{ date('Y') }} {{ config('app.name', 'Netware') }}. {{ __('site.labels.all_rights') }}
                     </p>
-                </div>            </div>
+                </div>
+            </div>
         </footer>
 
         {{-- Floating WhatsApp button: bottom-right on desktop, above the dock on mobile. --}}

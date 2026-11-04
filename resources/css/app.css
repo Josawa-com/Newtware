@@ -179,32 +179,435 @@ html.js [data-reveal].is-visible {
 }
 
 /*
- * Animated circuit background for catalogue heroes: faint traces that light up
- * in sequence, so the page has motion without moving any content.
+ * Animated engineering grid behind every section below the hero.
+ *
+ * Deliberately one single grid, same idea as the hero: large cells, hairline
+ * strokes, very low contrast. Two overlapping grids looked busy, so the fine
+ * layer was dropped and the tile was enlarged.
+ *
+ * The layer is a pseudo-element moved with `transform` rather than animating
+ * `background-position`. Transform runs on the compositor, so long pages stay
+ * smooth while scrolling; background-position would repaint the whole section
+ * on every frame.
  */
-@keyframes circuit-glow {
-    0%,
-    100% {
-        opacity: 0.15;
+.grid-motion {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.grid-motion::before {
+    content: '';
+    position: absolute;
+    inset: -160px;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgb(15 23 42 / 0.11) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(15 23 42 / 0.11) 1px, transparent 1px);
+    background-size: 80px 80px;
+    background-repeat: repeat;
+    will-change: transform;
+    backface-visibility: hidden;
+    animation: grid-drift 12s linear infinite;
+}
+
+.dark .grid-motion::before {
+    background-image:
+        linear-gradient(rgb(148 163 184 / 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(148 163 184 / 0.14) 1px, transparent 1px);
+}
+
+/* One full tile per loop, so the restart is invisible. */
+@keyframes grid-drift {
+    to {
+        transform: translate3d(80px, 80px, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .grid-motion::before {
+        animation: none;
+    }
+}
+
+/*
+ * Hero backdrop: a working circuit board.
+ *
+ * The hero is a PCB: orthogonal traces, 45-degree bends, vias, and short data
+ * pulses travelling along the copper. Three rules keep it professional:
+ *   1. Very low opacity; the copy always wins.
+ *   2. Light mode stays bright (pale board, teal traces), never darkened.
+ *   3. Pulses are short dashes, not moving dots, so they read as current.
+ */
+.hero-board {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.hero-board__svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 1200px);
+    height: max(100%, 600px);
+    transform: translate(-50%, -50%);
+}
+
+/* Which trace colour is used per theme. */
+.hero-board__traces--dark {
+    display: none;
+}
+
+.dark .hero-board__traces--light {
+    display: none;
+}
+
+.dark .hero-board__traces--dark {
+    display: inline;
+}
+
+/* Traces stay a hint rather than a drawing. */
+.hero-board__traces {
+    opacity: 0.78;
+}
+
+/* Vias: rings on the bends. */
+.hero-board__via {
+    stroke: rgb(22 125 148 / 0.5);
+}
+
+.dark .hero-board__via {
+    stroke: rgb(63 196 220 / 0.55);
+}
+
+/*
+ * Data pulses.
+ *
+ * A dash pattern of one short segment on a very long gap, animated through
+ * `stroke-dashoffset`. `pathLength="100"` in the markup normalises every trace's
+ * length, so a single keyframe works for all of them.
+ */
+.hero-board__pulse {
+    stroke: rgb(18 116 138 / 1);
+    stroke-dasharray: 8 92;
+    animation: pulse-run 7s linear infinite;
+}
+
+.dark .hero-board__pulse {
+    stroke: rgb(104 222 242 / 1);
+}
+
+@keyframes pulse-run {
+    from {
+        stroke-dashoffset: 100;
     }
 
-    50% {
-        opacity: 0.85;
+    to {
+        stroke-dashoffset: 0;
     }
 }
 
-.circuit-glow {
-    animation: circuit-glow 4.5s ease-in-out infinite;
+/*
+ * Haze: a soft veil over the left half where the headline sits, plus a gentle
+ * vignette. This is what keeps the board from ever touching the text.
+ */
+.hero-board__haze {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        100deg,
+        rgb(255 255 255 / 0.93) 0%,
+        rgb(255 255 255 / 0.8) 26%,
+        rgb(255 255 255 / 0.52) 42%,
+        rgb(255 255 255 / 0.2) 60%,
+        rgb(255 255 255 / 0.05) 76%,
+        transparent 92%
+    );
 }
 
-.circuit-glow-2 {
-    animation-duration: 6s;
-    animation-delay: 0.8s;
+.dark .hero-board__haze {
+    background: linear-gradient(
+        100deg,
+        rgb(2 6 23 / 0.93) 0%,
+        rgb(2 6 23 / 0.8) 26%,
+        rgb(2 6 23 / 0.52) 42%,
+        rgb(2 6 23 / 0.2) 60%,
+        rgb(2 6 23 / 0.05) 76%,
+        transparent 92%
+    );
 }
 
-.circuit-glow-3 {
-    animation-duration: 7.5s;
-    animation-delay: 1.6s;
+/*
+ * On phones the headline spans the full width, so a horizontal veil would hide
+ * the board entirely. Instead the veil fades vertically: dense behind the
+ * headline and buttons, clear towards the bottom where the stats sit. That keeps
+ * the copy readable while the pulses stay visible.
+ */
+@media (max-width: 1023px) {
+    .hero-board__haze {
+        background: linear-gradient(
+            180deg,
+            rgb(255 255 255 / 0.86) 0%,
+            rgb(255 255 255 / 0.5) 28%,
+            rgb(255 255 255 / 0.16) 52%,
+            transparent 82%
+        );
+    }
+
+    .dark .hero-board__haze {
+        background: linear-gradient(
+            180deg,
+            rgb(2 6 23 / 0.88) 0%,
+            rgb(2 6 23 / 0.62) 30%,
+            rgb(2 6 23 / 0.28) 54%,
+            rgb(2 6 23 / 0.06) 76%,
+            transparent 94%
+        );
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-board__pulse {
+        animation: none;
+        opacity: 0;
+    }
+}
+
+
+/*
+ * Testimonial card fan.
+ *
+ * Behaviour (driven by app.js):
+ *   1. The section is taller than the viewport. As it enters, the page pins it.
+ *   2. First the five photos rise from below, stopping at roughly half height.
+ *   3. Then each card is pulled up, one at a time, left to right, and rotated to
+ *      upright: -50deg, -25deg, 0deg, 25deg, 50deg.
+ *   4. Once the last card is up, a glow blooms behind the fan.
+ *   5. Only then does the page continue to the footer.
+ *
+ * Everything is expressed as CSS custom properties set by the script, so the
+ * animation stays on the compositor and does not fight the scroll itself.
+ */
+.testi-stage {
+    --enter: 0;
+    --lift: 0;
+    --glow: 0;
+
+    position: relative;
+}
+
+.testi-stage__pin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 3rem 1.25rem 4rem;
+    overflow: hidden;
+}
+
+@media (min-width: 640px) {
+    .testi-stage__pin {
+        padding-inline: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .testi-stage__pin {
+        padding-inline: 2rem;
+    }
+}
+
+.testi-stage__head,
+.testi-stage__hint {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+}
+
+.testi-stage__hint {
+    margin-top: 1.75rem;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(100 116 139 / 0.8);
+    transition: opacity 300ms ease;
+}
+
+.dark .testi-stage__hint {
+    color: rgb(148 163 184 / 0.8);
+}
+
+/* Once every card is standing, the hint has done its job. */
+.testi-stage[data-complete] .testi-stage__hint {
+    opacity: 0;
+}
+
+.testi-fan {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: clamp(16rem, 42vh, 26rem);
+    margin-block: 2rem 0;
+}
+
+/*
+ * Each card starts below the fan and rises by --enter (0 → 1). --lift rotates it
+ * upright and raises it a little, one card at a time.
+ */
+.testi-card {
+    --enter: 0;
+    --lift: 0;
+    --rot: 0deg;
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: clamp(8.5rem, 17vw, 13.5rem);
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid rgb(203 213 225 / 0.7);
+    background: rgb(241 245 249);
+    box-shadow: 0 20px 40px -32px rgb(15 23 42 / 0.5);
+    transform:
+        translate3d(calc(-50% + (var(--offset, 0px))), calc((1 - var(--enter)) * 120% - var(--lift) * 1.4rem), 0)
+        rotate(calc(var(--rot) * (1 - var(--lift) * 0.78)))
+        scale(calc(0.94 + var(--lift) * 0.12));
+    transform-origin: 50% 90%;
+    opacity: calc(0.25 + var(--enter) * 0.75);
+    transition: box-shadow 300ms ease;
+    will-change: transform, opacity;
+}
+
+.dark .testi-card {
+    border-color: rgb(51 65 85 / 0.9);
+    background: rgb(15 23 42);
+    box-shadow: 0 20px 40px -30px rgb(0 0 0 / 0.9);
+}
+
+/*
+ * The middle card sits on top of the fan; the outer ones tuck behind it. Written
+ * with :nth-child so the stacking is right even before the script runs.
+ */
+.testi-card:nth-child(1) {
+    --offset: -58%;
+}
+
+.testi-card:nth-child(2) {
+    --offset: -29%;
+}
+
+.testi-card:nth-child(3) {
+    --offset: 0%;
+}
+
+.testi-card:nth-child(4) {
+    --offset: 29%;
+}
+
+.testi-card:nth-child(5) {
+    --offset: 58%;
+}
+
+.testi-card__caption {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    padding: 1.5rem 0.75rem 0.75rem;
+    background: linear-gradient(to top, rgb(2 6 23 / 0.92), rgb(2 6 23 / 0.35) 60%, transparent);
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition:
+        opacity 320ms ease,
+        transform 320ms ease;
+}
+
+/* The caption appears once the card itself has been pulled up. */
+.testi-card[data-lifted] .testi-card__caption {
+    opacity: 1;
+    transform: none;
+}
+
+/* Glow behind the fan: dark mode gets the stronger version. */
+.testi-glow {
+    position: absolute;
+    bottom: -10%;
+    left: 50%;
+    width: min(52rem, 120%);
+    aspect-ratio: 2 / 1;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle closest-side,
+        rgb(22 125 148 / 0.34) 0%,
+        rgb(22 125 148 / 0.18) 34%,
+        rgb(22 125 148 / 0.06) 58%,
+        transparent 82%
+    );
+    opacity: var(--glow);
+    scale: calc(0.72 + var(--glow) * 0.3);
+    filter: blur(6px);
+    pointer-events: none;
+    will-change: opacity, scale;
+}
+
+.dark .testi-glow {
+    background: radial-gradient(
+        circle closest-side,
+        rgb(56 189 209 / 0.34) 0%,
+        rgb(56 189 209 / 0.18) 34%,
+        rgb(56 189 209 / 0.06) 58%,
+        transparent 82%
+    );
+}
+
+/*
+ * Without JavaScript, or with reduced motion, the fan is simply a row of upright
+ * cards. Nothing depends on scroll, so the content is never inaccessible.
+ */
+.testi-stage:not([data-ready]) .testi-card {
+    --enter: 1;
+    --lift: 1;
+    position: relative;
+    transform: none;
+    opacity: 1;
+}
+
+.testi-stage:not([data-ready]) .testi-fan {
+    gap: 1rem;
+    align-items: stretch;
+    height: auto;
+    flex-wrap: wrap;
+}
+
+.testi-stage:not([data-ready]) .testi-card__caption {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .testi-stage[data-ready] .testi-card {
+        --enter: 1;
+        --lift: 1;
+        opacity: 1;
+    }
+
+    .testi-card__caption {
+        opacity: 1;
+        transform: none;
+    }
+
+    .testi-glow {
+        opacity: 1;
+    }
 }
 
 /* Thin progress line that fills while the catalogue scrolls into view. */
@@ -223,9 +626,6 @@ html.js [data-reveal].is-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .circuit-glow,
-    .circuit-glow-2,
-    .circuit-glow-3,
     .scan-line {
         animation: none;
     }
@@ -332,7 +732,7 @@ html.js [data-reveal].is-visible {
 
 ::view-transition-new(root) {
     z-index: 2;
-    animation: theme-reveal 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: theme-reveal 1100ms cubic-bezier(0.3, 0.7, 0.25, 1) both;
 }
 
 @keyframes theme-reveal {

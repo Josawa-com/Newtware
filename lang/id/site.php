@@ -71,6 +71,9 @@ return [
     ],
 
     'services_page' => [
+        'detail_scope' => 'Cakupan Layanan',
+        'detail_others' => 'Layanan lainnya',
+        'detail_other_link' => 'Lihat layanan',
         'title_1' => 'Dipasang, diperbaiki,',
         'title_2' => 'siap dipakai.',
         'lead' => 'Enam jasa instalasi dan perbaikan yang dikerjakan siswa Teknik Komputer dan Jaringan, pendampingan guru, dan tarif ramah kantong sekolah.',

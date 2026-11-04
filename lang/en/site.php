@@ -71,6 +71,9 @@ return [
     ],
 
     'services_page' => [
+        'detail_scope' => 'Service scope',
+        'detail_others' => 'Other services',
+        'detail_other_link' => 'View service',
         'title_1' => 'Installed, repaired,',
         'title_2' => 'ready to use.',
         'lead' => 'Six installation and repair services handled by Computer and Network Engineering students, with teacher supervision and school-friendly pricing.',

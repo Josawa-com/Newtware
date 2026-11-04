@@ -14,24 +14,10 @@
 @endphp
 
 @section('content')
-    {{-- Hero: technical panel with animated circuit traces, mirroring the catalogue. --}}
-    <section class="relative overflow-hidden border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
-        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(51,80,149,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(51,80,149,0.055)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent)] dark:bg-[linear-gradient(to_right,rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.12)_1px,transparent_1px)]"></div>
-
-        <svg class="pointer-events-none absolute inset-0 hidden h-full w-full opacity-70 [mask-image:linear-gradient(to_right,transparent_30%,black_62%)] lg:block" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
-            <g fill="none" stroke="#167d94" stroke-width="1">
-                <path d="M0 340 H210 L280 270 H470" class="circuit-glow" />
-                <path d="M0 190 H120 L180 120 H360 L430 190 H620" class="circuit-glow circuit-glow-2" />
-                <path d="M1200 90 H1000 L930 160 H760 L700 90 H580" class="circuit-glow circuit-glow-3" />
-                <path d="M1200 300 H1030 L960 230 H820" class="circuit-glow circuit-glow-2" />
-            </g>
-            <g fill="#167d94">
-                <circle cx="280" cy="270" r="3" class="circuit-glow" />
-                <circle cx="430" cy="190" r="3" class="circuit-glow circuit-glow-2" />
-                <circle cx="930" cy="160" r="3" class="circuit-glow circuit-glow-3" />
-                <circle cx="960" cy="230" r="3" class="circuit-glow circuit-glow-2" />
-            </g>
-        </svg>
+    {{-- Hero: soft colour fields, deliberately unlike the grid that carries the rest of the page. --}}
+    <section class="relative overflow-hidden border-b-2 border-slate-300 bg-slate-50 dark:border-slate-700 dark:bg-slate-950">
+        {{-- Slow drifting colour pools; no lines, so the top of the page stands apart. --}}
+        @include('partials.hero-backdrop')
 
         <div class="relative mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:px-6 sm:py-12 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:py-14">
             <div class="lg:col-span-7" data-reveal>
@@ -76,7 +62,7 @@
                     </a>
                 </div>
 
-                <dl class="mt-9 grid max-w-lg grid-cols-3 divide-x divide-slate-200 border-y border-slate-200 py-4 dark:divide-slate-800 dark:border-slate-800">
+                <dl class="mt-9 grid max-w-lg grid-cols-3 divide-x-2 divide-slate-300 border-y-2 border-slate-300 py-4 dark:divide-slate-700 dark:border-slate-700">
                     <div class="pr-4">
                         <dt class="text-[10px] tracking-[0.16em] text-slate-400 uppercase">{{ __('site.labels.experience') }}</dt>
                         <dd class="mt-1 text-2xl font-semibold tabular-nums text-netware-navy dark:text-white">5+</dd>
@@ -97,13 +83,13 @@
 
             {{-- Right column: flow steps on a squared panel, then the network diagram. --}}
             <div class="lg:col-span-5" data-reveal>
-                <div class="border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 dark:border-slate-800">
+                <div class="border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-300 px-4 py-3 dark:border-slate-700">
                         <p class="text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase dark:text-slate-400">{{ __('site.labels.flow') }}</p>
                         <span class="text-[10px] font-semibold tracking-[0.14em] text-netware-teal uppercase">{{ __('site.labels.steps') }}</span>
                     </div>
 
-                    <ol class="divide-y divide-slate-200 dark:divide-slate-800">
+                    <ol class="divide-y divide-slate-300 dark:divide-slate-700">
                         @foreach ($flow as [$title, $description])
                             <li class="flex gap-4 px-4 py-4">
                                 <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center border border-netware-teal/30 bg-netware-teal/8 text-[11px] font-semibold tabular-nums text-netware-teal">
@@ -117,12 +103,12 @@
                         @endforeach
                     </ol>
 
-                    <p class="border-t border-slate-200 bg-netware-sand px-4 py-3 text-[11px] leading-relaxed text-amber-900 dark:border-slate-800 dark:bg-amber-500/10 dark:text-amber-200/90">
+                    <p class="border-t border-slate-300 bg-netware-sand px-4 py-3 text-[11px] leading-relaxed text-amber-900 dark:border-slate-700 dark:bg-amber-500/10 dark:text-amber-200/90">
                         {{ __('site.home.flow_note') }}
                     </p>
                 </div>
 
-                <div class="mt-3 border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900" aria-hidden="true">
+                <div class="mt-3 border border-slate-300 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-900" aria-hidden="true">
                     <div class="flex items-center justify-between gap-4">
                         <p class="text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase dark:text-slate-400">{{ __('site.home.network_title') }}</p>
                         <span class="flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.14em] text-emerald-600 uppercase dark:text-emerald-400">
@@ -170,7 +156,7 @@
                         </g>
                     </svg>
 
-                    <div class="mt-2 grid grid-cols-3 divide-x divide-slate-200 border-t border-slate-200 pt-2 dark:divide-slate-800 dark:border-slate-800">
+                    <div class="mt-2 grid grid-cols-3 divide-x-2 divide-slate-300 border-t-2 border-slate-300 pt-2 dark:divide-slate-700 dark:border-slate-700">
                         @foreach ([['LAN', '100 Mbps'], ['Uptime', '99,9%'], [__('site.home.queue_label'), '0']] as [$label, $value])
                             <div class="{{ $loop->first ? 'pr-3' : ($loop->last ? 'pl-3' : 'px-3') }}">
                                 <p class="text-[10px] tracking-[0.14em] text-slate-400 uppercase">{{ $label }}</p>
@@ -183,108 +169,120 @@
         </div>
     </section>
 
-    {{-- Marquee --}}
-    <section class="marquee overflow-hidden border-b border-slate-200 bg-netware-navy py-3 dark:border-slate-800 dark:bg-slate-900" aria-hidden="true">
-        <div class="marquee-track flex w-max items-center gap-8 whitespace-nowrap">
-            @foreach ([1, 2] as $copy)
-                <div @class(['flex items-center gap-8', 'pr-8' => $copy === 2])>
-                    @foreach (__('site.home.marquee') as $word)
-                        <span class="flex items-center gap-8 text-xs font-medium tracking-[0.12em] text-white/80 uppercase">
-                            {{ $word }}
-                            <span class="h-1 w-1 bg-netware-teal"></span>
-                        </span>
-                    @endforeach
-                </div>
-            @endforeach
-        </div>
-    </section>
-
-    {{-- Profil --}}
-    <section class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
-        <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
-            <div class="lg:col-span-4" data-reveal>
-                <div class="flex items-center gap-3">
-                    <span class="h-px w-8 bg-netware-teal"></span>
-                    <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.profile') }}</p>
-                </div>
-
-                <h2 class="mt-4 text-2xl leading-tight font-semibold tracking-tight text-netware-navy sm:text-3xl dark:text-white">
-                    {{ __('site.home.profile_title') }}
-                </h2>
-
-                <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                    {{ __('site.home.profile_lead') }}
-                </p>
-
-                <dl class="mt-6 divide-y divide-slate-200 border-y border-slate-200 dark:divide-slate-800 dark:border-slate-800">
-                    <div class="flex items-baseline justify-between gap-4 py-3">
-                        <dt class="text-xs tracking-wide text-slate-400 uppercase">{{ __('site.labels.managed_by') }}</dt>
-                        <dd class="text-right text-sm font-medium text-netware-navy dark:text-white">{{ app()->getLocale() === 'en' ? 'TKJ students' : 'Siswa TKJ' }}</dd>
+    {{-- Everything below the hero sits on the drifting engineering grid. --}}
+    <div class="grid-motion bg-white dark:bg-slate-950">
+        {{-- Marquee --}}
+        <section class="marquee overflow-hidden border-b border-slate-300 bg-netware-navy py-3 dark:border-slate-700 dark:bg-slate-900" aria-hidden="true">
+            <div class="marquee-track flex w-max items-center gap-8 whitespace-nowrap">
+                @foreach ([1, 2] as $copy)
+                    <div @class(['flex items-center gap-8', 'pr-8' => $copy === 2])>
+                        @foreach (__('site.home.marquee') as $word)
+                            <span class="flex items-center gap-8 text-xs font-medium tracking-[0.12em] text-white/80 uppercase">
+                                {{ $word }}
+                                <span class="h-1 w-1 bg-netware-teal"></span>
+                            </span>
+                        @endforeach
                     </div>
-                    <div class="flex items-baseline justify-between gap-4 py-3">
-                        <dt class="text-xs tracking-wide text-slate-400 uppercase">{{ __('site.labels.serves') }}</dt>
-                        <dd class="text-right text-sm font-medium text-netware-navy dark:text-white">{{ app()->getLocale() === 'en' ? 'Students, teachers, staff, guests' : 'Siswa, guru, karyawan, tamu' }}</dd>
-                    </div>
-                </dl>
+                @endforeach
             </div>
+        </section>
 
-            <div class="lg:col-span-8" data-reveal>
-                <div class="max-w-2xl space-y-5 text-sm leading-[1.85] text-slate-600 sm:text-base dark:text-slate-400">
-                    <p>{{ __('site.home.profile_p1') }}</p>
-                    <p>{{ __('site.home.profile_p2') }}</p>
-                </div>
-
-                <figure class="mt-8 border-l-2 border-netware-teal bg-slate-50 px-5 py-4 dark:bg-slate-900">
-                    <blockquote class="text-sm leading-relaxed font-medium text-netware-navy sm:text-base dark:text-slate-200">
-                        {{ __('site.home.profile_quote') }}
-                    </blockquote>
-                </figure>
-            </div>
-        </div>
-    </section>
-
-    {{-- Layanan: sama seperti grid katalog, sudut tegas dan garis pemisah tipis. --}}
-    <section class="border-y border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-        <div class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
-            <div class="flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-4 dark:border-slate-800" data-reveal>
-                <div>
+        {{-- Profil --}}
+        <section class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+            <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+                <div class="lg:col-span-4" data-reveal>
                     <div class="flex items-center gap-3">
                         <span class="h-px w-8 bg-netware-teal"></span>
-                        <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.services') }}</p>
+                        <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.profile') }}</p>
                     </div>
+
                     <h2 class="mt-4 text-2xl leading-tight font-semibold tracking-tight text-netware-navy sm:text-3xl dark:text-white">
-                        {{ __('site.home.services_title') }}
+                        {{ __('site.home.profile_title') }}
                     </h2>
+
+                    <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                        {{ __('site.home.profile_lead') }}
+                    </p>
+
+                    <dl class="mt-6 divide-y-2 divide-slate-300 border-y-2 border-slate-300 dark:divide-slate-700 dark:border-slate-700">
+                        <div class="flex items-baseline justify-between gap-4 py-3">
+                            <dt class="text-xs tracking-wide text-slate-400 uppercase">{{ __('site.labels.managed_by') }}</dt>
+                            <dd class="text-right text-sm font-medium text-netware-navy dark:text-white">{{ app()->getLocale() === 'en' ? 'TKJ students' : 'Siswa TKJ' }}</dd>
+                        </div>
+                        <div class="flex items-baseline justify-between gap-4 py-3">
+                            <dt class="text-xs tracking-wide text-slate-400 uppercase">{{ __('site.labels.serves') }}</dt>
+                            <dd class="text-right text-sm font-medium text-netware-navy dark:text-white">{{ app()->getLocale() === 'en' ? 'Students, teachers, staff, guests' : 'Siswa, guru, karyawan, tamu' }}</dd>
+                        </div>
+                    </dl>
                 </div>
 
-                <a
-                    href="{{ route('layanan') }}"
-                    class="inline-flex items-center gap-2 text-sm font-medium text-netware-navy transition-colors duration-200 hover:text-netware-teal dark:text-white"
-                >
-                    {{ __('site.actions.all_services') }}
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </a>
+                <div class="lg:col-span-8" data-reveal>
+                    <div class="max-w-2xl space-y-5 text-sm leading-[1.85] text-slate-600 sm:text-base dark:text-slate-400">
+                        <p>{{ __('site.home.profile_p1') }}</p>
+                        <p>{{ __('site.home.profile_p2') }}</p>
+                    </div>
+
+                    <figure class="mt-8 border-l-2 border-netware-teal bg-slate-50 px-5 py-4 dark:bg-slate-900">
+                        <blockquote class="text-sm leading-relaxed font-medium text-netware-navy sm:text-base dark:text-slate-200">
+                            {{ __('site.home.profile_quote') }}
+                        </blockquote>
+                    </figure>
+                </div>
             </div>
+        </section>
 
-            <ul class="mt-px grid gap-px border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-3 dark:border-slate-800 dark:bg-slate-800">
-                @foreach ($services as $service)
-                    <li class="group bg-white p-5 transition-colors duration-300 hover:bg-slate-50 dark:bg-slate-950 dark:hover:bg-slate-900" data-reveal>
-                        <div class="flex items-center justify-between gap-4">
-                            <span class="text-[10px] font-semibold tracking-[0.16em] tabular-nums text-slate-400 uppercase">
-                                {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
-                            </span>
-                            <svg class="h-4 w-4 text-slate-300 transition-colors duration-300 group-hover:text-netware-teal dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                            </svg>
+        {{-- Layanan: sama seperti grid katalog, sudut tegas dan garis pemisah tipis. --}}
+        <section class="border-y-2 border-slate-300 dark:border-slate-700">
+            <div class="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+                <div class="flex flex-wrap items-end justify-between gap-4 border-b-2 border-slate-300 pb-4 dark:border-slate-700" data-reveal>
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <span class="h-px w-8 bg-netware-teal"></span>
+                            <p class="text-xs font-semibold tracking-[0.2em] text-netware-teal uppercase">{{ __('site.labels.services') }}</p>
                         </div>
+                        <h2 class="mt-4 text-2xl leading-tight font-semibold tracking-tight text-netware-navy sm:text-3xl dark:text-white">
+                            {{ __('site.home.services_title') }}
+                        </h2>
+                    </div>
 
-                        <h3 class="mt-4 text-sm font-semibold text-netware-navy dark:text-white">{{ $service['name'][app()->getLocale()] ?? $service['name']['id'] }}</h3>
-                        <p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $service['description'][app()->getLocale()] ?? $service['description']['id'] }}</p>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </section>
+                    <a
+                        href="{{ route('layanan') }}"
+                        class="inline-flex items-center gap-2 text-sm font-medium text-netware-navy transition-colors duration-200 hover:text-netware-teal dark:text-white"
+                    >
+                        {{ __('site.actions.all_services') }}
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+
+                <ul class="mt-px grid gap-[2px] border border-slate-300 bg-slate-300 sm:grid-cols-2 lg:grid-cols-3 dark:border-slate-700 dark:bg-slate-800">
+                    @foreach ($services as $service)
+                        <li data-reveal>
+                            <a href="{{ route('layanan.detail', ['slug' => app(App\Http\Controllers\ServiceDetailController::class)::slugFor($service)]) }}" class="group flex h-full flex-col bg-white p-5 transition-colors duration-300 hover:bg-slate-50 dark:bg-slate-950 dark:hover:bg-slate-900">
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-[10px] font-semibold tracking-[0.16em] tabular-nums text-slate-400 uppercase">
+                                        {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
+                                    </span>
+                                    <svg class="h-4 w-4 text-slate-300 transition-colors duration-300 group-hover:text-netware-teal dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                    </svg>
+                                </div>
+
+                                <h3 class="mt-4 text-sm font-semibold text-netware-navy dark:text-white">{{ $service['name'][app()->getLocale()] ?? $service['name']['id'] }}</h3>
+                                <p class="mt-1.5 flex-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{{ $service['description'][app()->getLocale()] ?? $service['description']['id'] }}</p>
+                                <span class="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wide text-netware-teal uppercase">
+                                    {{ __('services_page.detail_other_link') }}
+                                    <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </section>
+    </div>
+
 @endsection

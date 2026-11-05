@@ -36,6 +36,7 @@ return [
         'profile' => 'Profile',
         'steps' => '3 steps',
         'service_list' => 'Service list',
+        'breadcrumb' => 'Breadcrumb',
         'all_rights' => 'All rights reserved.',
     ],
 

@@ -27,5 +27,9 @@ Route::post('/bahasa', function (Request $request) {
 
     $request->session()->put('locale', $locale);
 
+    if ($request->expectsJson()) {
+        return response()->json(['locale' => $locale]);
+    }
+
     return back();
 })->name('locale.switch');

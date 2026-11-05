@@ -24,7 +24,7 @@
 
         <div class="relative mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
             <div class="max-w-3xl" data-reveal>
-                <nav class="flex items-center gap-2 text-xs text-slate-400" aria-label="Breadcrumb">
+                <nav class="flex items-center gap-2 text-xs text-slate-400" aria-label="{{ __('site.labels.breadcrumb') }}">
                     <a href="{{ route('beranda') }}" class="transition-colors hover:text-netware-teal">{{ __('site.nav.home') }}</a>
                     <span aria-hidden="true">/</span>
                     <span class="text-slate-600 dark:text-slate-300">{{ __('testimoni.title') }}</span>
@@ -253,25 +253,29 @@
                 </div>
 
                 <div class="testi-fan" data-testi-fan>
-                    @foreach ($cards as $index => $card)
-                        <figure
-                            class="testi-card"
-                            data-testi-card
-                            data-index="{{ $index }}"
-                            style="--rot: {{ [-50, -25, 0, 25, 50][$index] ?? 0 }}deg; --z: {{ $index + 1 }};"
-                        >
-                            <img
-                                src="{{ asset('Testimoni/'.$card['image']) }}"
-                                alt="{{ $serviceNames[$card['service']] ?? '' }}"
-                                loading="lazy"
-                                class="h-full w-full object-cover"
-                            >
-                            <figcaption class="testi-card__caption">
-                                <span class="text-[10px] font-semibold tracking-[0.18em] text-white/60 uppercase">{{ __('testimoni.gallery.card_label') }}</span>
-                                <span class="mt-0.5 block text-sm font-semibold text-white">{{ $serviceNames[$card['service']] ?? '' }}</span>
-                            </figcaption>
-                        </figure>
-                    @endforeach
+                    @php
+    $mid = intdiv(count($cards), 2);
+    $maxZ = count($cards);
+@endphp
+@foreach ($cards as $index => $card)
+    <figure
+        class="testi-card"
+        data-testi-card
+        data-index="{{ $index }}"
+        style="--rot: {{ [-50, -25, 0, 25, 50][$index] ?? 0 }}deg; --z: {{ $maxZ - (int)abs($index - $mid) }};"
+    >
+        <img
+            src="{{ asset('Testimoni/'.$card['image']) }}"
+            alt="{{ $serviceNames[$card['service']] ?? '' }}"
+            loading="lazy"
+            class="h-full w-full object-cover"
+        >
+        <figcaption class="testi-card__caption">
+            <span class="text-[10px] font-semibold tracking-[0.18em] text-white/60 uppercase">{{ __('testimoni.gallery.card_label') }}</span>
+            <span class="mt-0.5 block text-sm font-semibold text-white">{{ $serviceNames[$card['service']] ?? '' }}</span>
+        </figcaption>
+    </figure>
+@endforeach
 
                     {{-- Light that blooms behind the fan once every card is up. --}}
                     <div class="testi-glow" data-testi-glow aria-hidden="true"></div>

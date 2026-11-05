@@ -483,6 +483,7 @@ html.js [data-reveal].is-visible {
         scale(calc(0.94 + var(--lift) * 0.12));
     transform-origin: 50% 90%;
     opacity: calc(0.25 + var(--enter) * 0.75);
+    z-index: var(--z);
     transition: box-shadow 300ms ease;
     will-change: transform, opacity;
 }

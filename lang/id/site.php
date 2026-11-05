@@ -36,6 +36,7 @@ return [
         'profile' => 'Profil',
         'steps' => '3 langkah',
         'service_list' => 'Daftar jasa',
+        'breadcrumb' => 'Navigasi jejak',
         'all_rights' => 'Hak cipta dilindungi.',
     ],
 

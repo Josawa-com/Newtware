@@ -29,7 +29,7 @@
         @include('partials.hero-backdrop')
 
         <div class="relative mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
-            <nav class="flex items-center gap-2 text-xs text-slate-400" aria-label="Breadcrumb">
+            <nav class="flex items-center gap-2 text-xs text-slate-400" aria-label="{{ __('site.labels.breadcrumb') }}">
                 <a href="{{ route('beranda') }}" class="transition-colors hover:text-netware-teal">{{ __('site.nav.home') }}</a>
                 <span aria-hidden="true">/</span>
                 <span class="text-slate-600 dark:text-slate-300">{{ __('site.nav.products') }}</span>

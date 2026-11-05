@@ -361,47 +361,111 @@ if (themeToggle) {
     });
 }
 
-/* Language switch: a colour band sweeps down, then the new page keeps scrolling it away. */
+/* Switch language in the background, then patch the rendered page in place. */
 const localeForm = document.querySelector('[data-locale-form]');
 
 if (localeForm) {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Coming back from a switch: the band is already covering the viewport
-    // (set inline in <head>), so it only has to slide away.
-    if (sessionStorage.getItem('netware:locale-switching') === '1') {
-        sessionStorage.removeItem('netware:locale-switching');
-
-        const restoreScroll = Number(sessionStorage.getItem('netware:locale-scroll') ?? '0');
-        sessionStorage.removeItem('netware:locale-scroll');
-
-        if (restoreScroll > 0) {
-            window.scrollTo({ top: restoreScroll, behavior: 'instant' });
-        }
-
-        if (!reduceMotion) {
-            window.setTimeout(() => {
-                delete document.documentElement.dataset.localePhase;
-            }, 380);
-        } else {
-            delete document.documentElement.dataset.localePhase;
-        }
-    }
-
     localeForm.addEventListener('submit', (event) => {
-        sessionStorage.setItem('netware:locale-switching', '1');
-        sessionStorage.setItem('netware:locale-scroll', String(window.scrollY));
+        event.preventDefault();
+        const submit = localeForm.querySelector('[data-locale-submit]');
+        const formData = new FormData(localeForm);
 
-        if (reduceMotion) {
-            return;
+        if (submit) {
+            submit.disabled = true;
         }
 
-        event.preventDefault();
+        fetch(localeForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'same-origin',
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('The language could not be changed.');
+                }
 
-        document.documentElement.dataset.localePhase = 'out';
+                return fetch(window.location.href, {
+                    headers: { Accept: 'text/html', 'X-Requested-With': 'XMLHttpRequest' },
+                    credentials: 'same-origin',
+                });
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('The translated page could not be loaded.');
+                }
 
-        // Submit once the band has covered the viewport.
-        window.setTimeout(() => localeForm.submit(), 280);
+                return response.text();
+            })
+            .then((html) => {
+                const parsed = new DOMParser().parseFromString(html, 'text/html');
+                const isDarkTheme = document.documentElement.classList.contains('dark');
+
+                const patchNode = (current, incoming) => {
+                    if (current.nodeType !== incoming.nodeType || current.nodeName !== incoming.nodeName) {
+                        current.replaceWith(incoming.cloneNode(true));
+
+                        return;
+                    }
+
+                    if (current.nodeType === Node.TEXT_NODE || current.nodeType === Node.COMMENT_NODE) {
+                        if (current.nodeValue !== incoming.nodeValue) {
+                            current.nodeValue = incoming.nodeValue;
+                        }
+
+                        return;
+                    }
+
+                    if (current.nodeName === 'SCRIPT') {
+                        return;
+                    }
+
+                    [...current.attributes].forEach(({ name }) => {
+                        if (!incoming.hasAttribute(name)) {
+                            current.removeAttribute(name);
+                        }
+                    });
+
+                    [...incoming.attributes].forEach(({ name, value }) => {
+                        if (current.getAttribute(name) !== value) {
+                            current.setAttribute(name, value);
+                        }
+                    });
+
+                    const currentChildren = [...current.childNodes];
+                    const incomingChildren = [...incoming.childNodes];
+
+                    incomingChildren.forEach((child, index) => {
+                        if (currentChildren[index]) {
+                            patchNode(currentChildren[index], child);
+                        } else {
+                            current.append(child.cloneNode(true));
+                        }
+                    });
+
+                    currentChildren.slice(incomingChildren.length).forEach((child) => child.remove());
+                };
+
+                patchNode(document.documentElement, parsed.documentElement);
+                document.documentElement.classList.toggle('dark', isDarkTheme);
+                document.title = parsed.title;
+                document.querySelector('[data-theme-toggle]')?.setAttribute('aria-pressed', String(isDarkTheme));
+                setIndicatorPosition(activeNavigationItem());
+            })
+            .catch((error) => {
+                console.error(error);
+                window.location.reload();
+            })
+            .finally(() => {
+                const currentSubmit = document.querySelector('[data-locale-submit]');
+
+                if (currentSubmit) {
+                    currentSubmit.disabled = false;
+                }
+            });
     });
 }
 

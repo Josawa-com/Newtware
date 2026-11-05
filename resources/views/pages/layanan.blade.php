@@ -21,7 +21,7 @@
 
         <div class="relative mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:px-6 sm:py-12 lg:grid-cols-12 lg:items-end lg:gap-12 lg:px-8 lg:py-14">
             <div class="lg:col-span-7" data-reveal>
-                <nav class="flex items-center gap-2 text-xs text-slate-400" aria-label="Breadcrumb">
+                <nav class="flex items-center gap-2 text-xs text-slate-400" aria-label="{{ __('site.labels.breadcrumb') }}">
                     <a href="{{ route('beranda') }}" class="transition-colors hover:text-netware-teal">{{ __('site.nav.home') }}</a>
                     <span aria-hidden="true">/</span>
                     <span class="text-slate-600 dark:text-slate-300">{{ __('site.nav.services') }}</span>

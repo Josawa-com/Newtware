@@ -235,14 +235,15 @@
                 </div>
             </div>
         </section>
+    </div>
 
-        {{-- Scroll-driven card fan --}}
-        <section
-            class="testi-stage border-t-2 border-slate-300 dark:border-slate-700"
-            data-testi-stage
-            data-card-count="{{ count($cards) }}"
-            aria-label="{{ __('testimoni.gallery.heading') }}"
-        >
+    {{-- Scroll-driven folder reveal, outside the clipped rating background so sticky can pin. --}}
+    <section
+        class="testi-stage border-t-2 border-slate-300 dark:border-slate-700"
+        data-testi-stage
+        data-card-count="{{ count($cards) }}"
+        aria-label="{{ __('testimoni.gallery.heading') }}"
+    >
             <div class="testi-stage__pin">
                 <div class="testi-stage__head">
                     <div class="flex items-center gap-3">
@@ -254,35 +255,39 @@
 
                 <div class="testi-fan" data-testi-fan>
                     @php
-    $mid = intdiv(count($cards), 2);
-    $maxZ = count($cards);
-@endphp
-@foreach ($cards as $index => $card)
-    <figure
-        class="testi-card"
-        data-testi-card
-        data-index="{{ $index }}"
-        style="--rot: {{ [-50, -25, 0, 25, 50][$index] ?? 0 }}deg; --z: {{ $maxZ - (int)abs($index - $mid) }};"
-    >
-        <img
-            src="{{ asset('Testimoni/'.$card['image']) }}"
-            alt="{{ $serviceNames[$card['service']] ?? '' }}"
-            loading="lazy"
-            class="h-full w-full object-cover"
-        >
-        <figcaption class="testi-card__caption">
-            <span class="text-[10px] font-semibold tracking-[0.18em] text-white/60 uppercase">{{ __('testimoni.gallery.card_label') }}</span>
-            <span class="mt-0.5 block text-sm font-semibold text-white">{{ $serviceNames[$card['service']] ?? '' }}</span>
-        </figcaption>
-    </figure>
-@endforeach
+                        $mid = intdiv(count($cards), 2);
+                        $maxZ = count($cards);
+                    @endphp
+                    @foreach ($cards as $index => $card)
+                        <figure
+                            class="testi-card"
+                            data-testi-card
+                            data-index="{{ $index }}"
+                            style="--z: {{ $maxZ - (int) abs($index - $mid) }};"
+                        >
+                            <figcaption class="testi-card__caption">
+                                <span class="block text-center text-sm leading-snug font-semibold text-netware-navy sm:text-base dark:text-white">
+                                    {{ $serviceNames[$card['service']] ?? '' }}
+                                </span>
+                            </figcaption>
+                            <img
+                                src="{{ asset('Testimoni/'.$card['image']) }}"
+                                alt="{{ $serviceNames[$card['service']] ?? '' }}"
+                                loading="lazy"
+                                class="testi-card__image w-full object-cover"
+                            >
+                        </figure>
+                    @endforeach
 
-                    {{-- Light that blooms behind the fan once every card is up. --}}
-                    <div class="testi-glow" data-testi-glow aria-hidden="true"></div>
+                    <img
+                        src="{{ asset('Folder.png') }}"
+                        alt=""
+                        class="testi-folder"
+                        data-folder-cover
+                        aria-hidden="true"
+                    >
+
                 </div>
-
-                <p class="testi-stage__hint" data-testi-hint>{{ __('testimoni.gallery.hint') }}</p>
             </div>
-        </section>
-    </div>
+    </section>
 @endsection

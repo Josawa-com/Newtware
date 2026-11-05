@@ -498,13 +498,13 @@ if (revealTargets.length > 0 && !('IntersectionObserver' in window)) {
 }
 
 /*
- * Testimonial card fan.
+ * Scroll-driven testimonial folder reveal.
  *
  * The section is pinned for a while so the animation can own the scroll:
  *
- *   phase 1  the five photos rise from below and stop half-visible
- *   phase 2  each card is pulled up, left to right, and straightened
- *   phase 3  a glow blooms behind the finished fan
+ *   phase 1  the folder moves up while the photos drop from underneath
+ *   phase 2  the five upright photos spread evenly to the sides
+ *   phase 3  the page continues after the photos have spread
  *
  * Progress is a single 0..1 value derived from how far the section has been
  * scrolled through. All the phase maths lives here; the CSS only reads the
@@ -514,16 +514,19 @@ const testiStage = document.querySelector('[data-testi-stage]');
 
 if (testiStage) {
     const cards = [...testiStage.querySelectorAll('[data-testi-card]')];
-    const glow = testiStage.querySelector('[data-testi-glow]');
+    const folder = testiStage.querySelector('[data-folder-cover]');
     const fan = testiStage.querySelector('[data-testi-fan]');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (cards.length > 0 && !reducedMotion) {
-        // Roughly 0.85 screens of scroll per card, plus room for the intro and
-        // the closing glow. Enough to feel deliberate, not so much that the
-        // page feels stuck.
+    if (cards.length > 0 && folder && fan && !reducedMotion) {
         const steps = cards.length;
-        const sectionHeight = () => window.innerHeight * (1 + steps * 0.85 + 0.6);
+        const coverEnd = 0.32;
+        const spreadEnd = 0.96;
+        const sectionHeight = () => window.innerHeight * (1 + steps * 0.45 + 1);
+        const clampProgress = (value) => Math.min(1, Math.max(0, value));
+        const easeOutCubic = (value) => 1 - (1 - value) ** 3;
+        const easeInOutCubic = (value) =>
+            value < 0.5 ? 4 * value ** 3 : 1 - ((-2 * value + 2) ** 3) / 2;
 
         const setSectionHeight = () => {
             testiStage.style.minHeight = `${Math.round(sectionHeight())}px`;
@@ -531,10 +534,6 @@ if (testiStage) {
 
         setSectionHeight();
         testiStage.setAttribute('data-ready', '');
-
-        const rise = 0.14;          // share of the timeline used to lift the fan
-        const cardSpan = 0.68 / steps; // each card's slice of the pull-up phase
-        const glowStart = rise + 0.68;
 
         let frame = 0;
 
@@ -552,41 +551,76 @@ if (testiStage) {
             // scrolled all the way through.
             const progress = Math.min(1, Math.max(0, -rect.top / travel));
 
-            // Phase 1: the fan rises. Eased so it settles rather than stops dead.
-            const enter = Math.min(1, progress / rise);
-            testiStage.style.setProperty('--enter', enter.toFixed(4));
+            // Move the folder up while the photos slide down from underneath it.
+            const coverProgress = clampProgress(progress / coverEnd);
+            const spreadProgress = easeInOutCubic(
+                clampProgress((progress - coverEnd) / (spreadEnd - coverEnd)),
+            );
+            const fanHeight = fan.clientHeight;
+            const pinTop = testiStage.querySelector('.testi-stage__pin').getBoundingClientRect().top;
+            const fanCenter = fan.getBoundingClientRect().top + fanHeight / 2;
+            const folderExit = fanCenter - pinTop + folder.offsetHeight / 2 + 16;
+            const folderOffset = -folderExit * easeOutCubic(coverProgress);
+            const availableWidth = Math.max(0, fan.clientWidth - 32);
+            const isMobile = window.innerWidth <= 639;
+            const staggerMobileLayout = isMobile && window.innerHeight >= 680;
+            const maximumColumnWidth = availableWidth / 3;
+            const maximumCompactRowWidth = Math.max(48, ((fanHeight - 16) / 2 - 54) * 0.75);
+            const desktopWidth = window.innerWidth >= 1024;
+            const cardWidth = isMobile
+                ? Math.min(100, maximumColumnWidth, staggerMobileLayout ? 100 : maximumCompactRowWidth)
+                : Math.min(
+                      desktopWidth ? 220 : 160,
+                      fan.clientWidth * (desktopWidth ? 0.22 : 0.18),
+                      (availableWidth / steps) * 1.25,
+                  );
 
-            // Phase 2: cards pull up one by one.
+            cards.forEach((card) => {
+                card.style.setProperty('--card-width', `${cardWidth.toFixed(2)}px`);
+            });
+
+            const cardHeight = cards[0].offsetHeight;
+            const restingDrop = Math.max(0, (fanHeight - cardHeight) / 2);
+            const dropOffset = restingDrop * easeOutCubic(coverProgress);
+            const spreadStep = Math.min(cardWidth * 1.35, (availableWidth - cardWidth) / Math.max(1, steps - 1));
+            const middle = (steps - 1) / 2;
+
+            folder.style.setProperty('--folder-y', `${folderOffset.toFixed(2)}px`);
             cards.forEach((card, index) => {
-                const start = rise + cardSpan * index;
-                const local = Math.min(1, Math.max(0, (progress - start) / cardSpan));
-                // Each card spends 78% of its slice travelling and the rest held
-                // upright, which is when its caption is readable.
-                const lift = Math.min(1, local / 0.78);
+                let horizontalOffset = (index - middle) * spreadStep;
+                let verticalOffset = 0;
 
-                card.style.setProperty('--enter', Math.min(1, enter).toFixed(4));
-                card.style.setProperty('--lift', lift.toFixed(4));
+                if (staggerMobileLayout) {
+                    const row = index === 1 ? 1 : index >= 3 ? 2 : 0;
+                    const columns = row === 1 ? 1 : 2;
+                    const column = row === 1 ? 0 : row === 0 ? index / 2 : index - 3;
+                    const rowStep = columns === 1 ? 0 : (availableWidth - cardWidth) / (columns - 1);
 
-                if (lift > 0.82) {
-                    card.setAttribute('data-lifted', '');
+                    horizontalOffset = columns === 1 ? 0 : (column - 0.5) * rowStep;
+                    verticalOffset = (row - 1) * Math.min(cardHeight / 2 + 5, fanHeight * 0.22);
+                } else if (isMobile) {
+                    const row = index < 3 ? 0 : 1;
+                    const firstIndexInRow = row === 0 ? 0 : 3;
+                    const columns = row === 0 ? 3 : 2;
+                    const column = index - firstIndexInRow;
+                    const rowStep = (availableWidth - cardWidth) / (columns - 1);
+
+                    horizontalOffset = (column - (columns - 1) / 2) * rowStep;
+                    verticalOffset = (row === 0 ? -1 : 1) * (cardHeight / 2 + 5);
+                }
+
+                horizontalOffset *= spreadProgress;
+                card.style.setProperty('--drop-y', `${dropOffset.toFixed(2)}px`);
+                card.style.setProperty('--spread-x', `${horizontalOffset.toFixed(2)}px`);
+                card.style.setProperty('--spread-y', `${(verticalOffset * spreadProgress).toFixed(2)}px`);
+
+                if (spreadProgress > 0.9) {
+                    card.setAttribute('data-spread', '');
                 } else {
-                    card.removeAttribute('data-lifted');
+                    card.removeAttribute('data-spread');
                 }
             });
 
-            // Phase 3: the glow blooms once the last card is standing.
-            const glowProgress = Math.min(1, Math.max(0, (progress - glowStart) / (1 - glowStart)));
-            testiStage.style.setProperty('--glow', glowProgress.toFixed(4));
-
-            if (glow) {
-                glow.style.opacity = (glowProgress * 0.9).toFixed(3);
-            }
-
-            if (glowProgress >= 1) {
-                testiStage.setAttribute('data-complete', '');
-            } else {
-                testiStage.removeAttribute('data-complete');
-            }
         };
 
         const schedule = () => {

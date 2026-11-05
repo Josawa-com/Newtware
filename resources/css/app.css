@@ -381,30 +381,33 @@ html.js [data-reveal].is-visible {
  * Testimonial card fan.
  *
  * Behaviour (driven by app.js):
- *   1. The section is taller than the viewport. As it enters, the page pins it.
- *   2. First the five photos rise from below, stopping at roughly half height.
- *   3. Then each card is pulled up, one at a time, left to right, and rotated to
- *      upright: -50deg, -25deg, 0deg, 25deg, 50deg.
- *   4. Once the last card is up, a glow blooms behind the fan.
- *   5. Only then does the page continue to the footer.
+ *   1. The section pins while the folder covers the five stacked photos.
+ *   2. The folder moves up as the photos move down.
+ *   3. The photos spread horizontally and reveal their captions.
+ *   4. The page continues to the footer once the photos are spread out.
  *
  * Everything is expressed as CSS custom properties set by the script, so the
  * animation stays on the compositor and does not fight the scroll itself.
  */
 .testi-stage {
-    --enter: 0;
-    --lift: 0;
-    --glow: 0;
-
     position: relative;
+    background-color: white;
+}
+
+.dark .testi-stage {
+    background-color: #020617;
 }
 
 .testi-stage__pin {
+    position: sticky;
+    top: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 100vh;
-    padding: 3rem 1.25rem 4rem;
+    box-sizing: border-box;
+    height: 100vh;
+    height: 100svh;
+    padding: 4.5rem 1.25rem 4rem;
     overflow: hidden;
 }
 
@@ -420,33 +423,12 @@ html.js [data-reveal].is-visible {
     }
 }
 
-.testi-stage__head,
-.testi-stage__hint {
+.testi-stage__head {
     position: relative;
     z-index: 3;
     width: 100%;
     max-width: 80rem;
     margin-inline: auto;
-}
-
-.testi-stage__hint {
-    margin-top: 1.75rem;
-    text-align: center;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgb(100 116 139 / 0.8);
-    transition: opacity 300ms ease;
-}
-
-.dark .testi-stage__hint {
-    color: rgb(148 163 184 / 0.8);
-}
-
-/* Once every card is standing, the hint has done its job. */
-.testi-stage[data-complete] .testi-stage__hint {
-    opacity: 0;
 }
 
 .testi-fan {
@@ -455,75 +437,87 @@ html.js [data-reveal].is-visible {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    height: clamp(16rem, 42vh, 26rem);
-    margin-block: 2rem 0;
+    height: clamp(20rem, 54vh, 34rem);
+    margin-block: 1rem 0;
 }
 
-/*
- * Each card starts below the fan and rises by --enter (0 → 1). --lift rotates it
- * upright and raises it a little, one card at a time.
- */
+@media (max-width: 639px) {
+    .testi-stage__pin {
+        padding: 2.5rem 1rem 7rem;
+    }
+
+    .testi-fan {
+        height: clamp(22rem, 48vh, 26rem);
+        margin-top: -0.5rem;
+    }
+
+}
+
+/* Photos stay upright as they drop from the folder and spread to the sides. */
 .testi-card {
-    --enter: 0;
-    --lift: 0;
-    --rot: 0deg;
+    --drop-y: 0px;
+    --spread-x: 0px;
+    --spread-y: 0px;
 
     position: absolute;
-    bottom: 0;
+    top: 50%;
     left: 50%;
-    width: clamp(8.5rem, 17vw, 13.5rem);
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    border: 1px solid rgb(203 213 225 / 0.7);
-    background: rgb(241 245 249);
-    box-shadow: 0 20px 40px -32px rgb(15 23 42 / 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: var(--card-width, clamp(7rem, 18vw, 13.75rem));
+    overflow: visible;
     transform:
-        translate3d(calc(-50% + (var(--offset, 0px))), calc((1 - var(--enter)) * 120% - var(--lift) * 1.4rem), 0)
-        rotate(calc(var(--rot) * (1 - var(--lift) * 0.78)))
-        scale(calc(0.94 + var(--lift) * 0.12));
-    transform-origin: 50% 90%;
-    opacity: calc(0.25 + var(--enter) * 0.75);
+        translate3d(calc(-50% + var(--spread-x)), calc(-50% + var(--drop-y) + var(--spread-y)), 0);
+    transform-origin: center;
+    opacity: 1;
     z-index: var(--z);
     transition: box-shadow 300ms ease;
     will-change: transform, opacity;
 }
 
-.dark .testi-card {
+.testi-card__image {
+    display: block;
+    aspect-ratio: 3 / 4;
+    border: 1px solid rgb(203 213 225 / 0.7);
+    background: rgb(241 245 249);
+    box-shadow: 0 12px 26px -20px rgb(15 23 42 / 0.6);
+    transition: box-shadow 500ms ease;
+}
+
+.testi-folder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    width: clamp(20rem, 40vw, 32rem);
+    aspect-ratio: 433 / 577;
+    object-fit: contain;
+    transform: translate3d(-50%, calc(-50% + var(--folder-y, 0px)), 0);
+    opacity: var(--folder-opacity, 1);
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+@media (max-width: 639px) {
+    .testi-folder {
+        width: min(20rem, calc(100vw - 2rem));
+    }
+}
+
+.dark .testi-card__image {
     border-color: rgb(51 65 85 / 0.9);
     background: rgb(15 23 42);
     box-shadow: 0 20px 40px -30px rgb(0 0 0 / 0.9);
 }
 
-/*
- * The middle card sits on top of the fan; the outer ones tuck behind it. Written
- * with :nth-child so the stacking is right even before the script runs.
- */
-.testi-card:nth-child(1) {
-    --offset: -58%;
-}
-
-.testi-card:nth-child(2) {
-    --offset: -29%;
-}
-
-.testi-card:nth-child(3) {
-    --offset: 0%;
-}
-
-.testi-card:nth-child(4) {
-    --offset: 29%;
-}
-
-.testi-card:nth-child(5) {
-    --offset: 58%;
-}
-
 .testi-card__caption {
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    padding: 1.5rem 0.75rem 0.75rem;
-    background: linear-gradient(to top, rgb(2 6 23 / 0.92), rgb(2 6 23 / 0.35) 60%, transparent);
+    position: relative;
+    display: flex;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 0.15rem;
     opacity: 0;
     transform: translateY(0.5rem);
     transition:
@@ -531,43 +525,31 @@ html.js [data-reveal].is-visible {
         transform 320ms ease;
 }
 
-/* The caption appears once the card itself has been pulled up. */
-.testi-card[data-lifted] .testi-card__caption {
+.testi-card__caption span {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/* Captions appear when the photos have nearly reached their spread positions. */
+.testi-card[data-spread] .testi-card__caption {
     opacity: 1;
     transform: none;
 }
 
-/* Glow behind the fan: dark mode gets the stronger version. */
-.testi-glow {
-    position: absolute;
-    bottom: -10%;
-    left: 50%;
-    width: min(52rem, 120%);
-    aspect-ratio: 2 / 1;
-    translate: -50% 0;
-    border-radius: 50%;
-    background: radial-gradient(
-        circle closest-side,
-        rgb(22 125 148 / 0.34) 0%,
-        rgb(22 125 148 / 0.18) 34%,
-        rgb(22 125 148 / 0.06) 58%,
-        transparent 82%
-    );
-    opacity: var(--glow);
-    scale: calc(0.72 + var(--glow) * 0.3);
-    filter: blur(6px);
-    pointer-events: none;
-    will-change: opacity, scale;
+.testi-card[data-spread] .testi-card__image {
+    box-shadow:
+        0 0 0 1px rgb(0 0 0 / 0.55),
+        0 0 16px rgb(0 0 0 / 0.38),
+        0 0 38px rgb(0 0 0 / 0.22);
 }
 
-.dark .testi-glow {
-    background: radial-gradient(
-        circle closest-side,
-        rgb(56 189 209 / 0.34) 0%,
-        rgb(56 189 209 / 0.18) 34%,
-        rgb(56 189 209 / 0.06) 58%,
-        transparent 82%
-    );
+.dark .testi-card[data-spread] .testi-card__image {
+    box-shadow:
+        0 0 0 1px rgb(255 255 255 / 0.75),
+        0 0 18px rgb(255 255 255 / 0.62),
+        0 0 42px rgb(255 255 255 / 0.34);
 }
 
 /*
@@ -575,8 +557,6 @@ html.js [data-reveal].is-visible {
  * cards. Nothing depends on scroll, so the content is never inaccessible.
  */
 .testi-stage:not([data-ready]) .testi-card {
-    --enter: 1;
-    --lift: 1;
     position: relative;
     transform: none;
     opacity: 1;
@@ -594,10 +574,13 @@ html.js [data-reveal].is-visible {
     transform: none;
 }
 
+.testi-stage:not([data-ready]) .testi-folder {
+    display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .testi-stage[data-ready] .testi-card {
-        --enter: 1;
-        --lift: 1;
+        --drop-y: 0px;
         opacity: 1;
     }
 
@@ -606,9 +589,6 @@ html.js [data-reveal].is-visible {
         transform: none;
     }
 
-    .testi-glow {
-        opacity: 1;
-    }
 }
 
 /* Thin progress line that fills while the catalogue scrolls into view. */
